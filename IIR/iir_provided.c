@@ -16,7 +16,7 @@ void filter_init(short int *X, short int *Y){
 }
 
 void print(int i){
-	printf("Y[%2d]_=_%+6hi_=_%04hX_......._x[%2d]_=_%8.5f\n",i, Y[i], Y[i], ((float)Y[i])/32768);
+	printf("Y[%2d]_=_%+6hi_=_%04hX_......._x[%2d]_=_%8.5f\n",i, Y[i], Y[i],i, ((float)Y[i])/32768);
 }
 
 void main(){
