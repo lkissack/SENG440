@@ -40,7 +40,7 @@ void main(){
 		tmp_3 = ((int)C3 *(int)Y[i-1] + (1<<14))>>15;
 		tmp_4 = ((int)C0 *(int)Y[i-2] + (1<<14))>>15;
 		
-		Y[i] = (short int)( tmp0 +tmp1 + tmp2 + tmp3 + tmp4);
+		Y[i] = (short int)( tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 	}
 	
 }
