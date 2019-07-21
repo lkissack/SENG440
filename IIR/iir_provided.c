@@ -37,8 +37,8 @@ void main(){
 		tmp_0 = ((int)C0 *(int)X[i] + (1<<14))>>15;
 		tmp_1 = ((int)C1 *(int)X[i-1] + (1<<14))>>15;
 		tmp_2 = ((int)C2 *(int)X[i-2] + (1<<14))>>15;
-		tmp_3 = ((int)C3 *(int)X[i-3] + (1<<14))>>15;
-		tmp_4 = ((int)C0 *(int)X[i-4] + (1<<14))>>15;
+		tmp_3 = ((int)C3 *(int)Y[i-1] + (1<<14))>>15;
+		tmp_4 = ((int)C0 *(int)Y[i-2] + (1<<14))>>15;
 		
 		Y[i] = (short int)( tmp0 +tmp1 + tmp2 + tmp3 + tmp4);
 	}
