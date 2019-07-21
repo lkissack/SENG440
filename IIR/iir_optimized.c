@@ -34,26 +34,29 @@ void main(){
 	filter_init(X, Y);
 	
 	for (i =2; i< 100; i+=2){
-		//load this into a register and resuse it again
+		//loading operations
 		int Xi = X[i];
-		int Xi_minus_1 = X[i-1];
+		int Xi_minus_1 = X[i-1];		
+		tmp_2 = ((int)C2 *(int)X[i-2] + (1<<14))>>15;	
+		int Yi_minus_1 = Y[i-1];		
+		tmp_4 = ((int)C0 *(int)Y[i-2] + (1<<14))>>15;
+		
+		//calculations
 		tmp_0 = ((int)C0 *(int)Xi + (1<<14))>>15;
 		tmp_1 = ((int)C1 *(int)Xi_minus_1 + (1<<14))>>15;
-		tmp_2 = ((int)C2 *(int)X[i-2] + (1<<14))>>15;
-		int Yi_minus_1 = Y[i-1];
 		tmp_3 = ((int)C3 *(int)Yi_minus_1 + (1<<14))>>15;
-		tmp_4 = ((int)C0 *(int)Y[i-2] + (1<<14))>>15;
 		int Yi = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
-		Y[i] = (short int)( Yi);
-		
-		//Unroll the loop
+						
 		tmp_0 = ((int)C0 *(int)X[i+1] + (1<<14))>>15;
 		tmp_1 = ((int)C1 *(int)Xi + (1<<14))>>15;
 		tmp_2 = ((int)C2 *(int)Xi_minus_1 + (1<<14))>>15;
 		tmp_3 = ((int)C3 *(int)Yi + (1<<14))>>15;
 		tmp_4 = ((int)C0 *(int)Yi_minus_1 + (1<<14))>>15;
 		int Yi_plus_1 = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
-		Y[i+1] = (short int)( Yi_plus_one);
+		
+		//storing operations
+		Y[i] = (short int)( Yi);
+		Y[i+1] = (short int)( Yi_plus_1);
 		
 	}
 	
