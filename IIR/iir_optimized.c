@@ -21,6 +21,7 @@ void print(int i){
 
 void main(){
 
+	printf("Hello World\n");
 	const short int C0 = 0x10C8;
 	const short int C1 = 0x2190;
 	const short int C2 = 0x10C8;
