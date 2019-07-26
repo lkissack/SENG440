@@ -36,6 +36,7 @@ void main(){
 	
 	for (i =2; i< 100; i+=2){
 		//loading operations
+		//not sure what (1<<14) is doing?
 		int Xi = X[i];
 		int Xi_minus_1 = X[i-1];		
 		tmp_2 = ((int)C2 *(int)X[i-2] + (1<<14))>>15;	
@@ -58,6 +59,9 @@ void main(){
 		//storing operations
 		Y[i] = (short int)( Yi);
 		Y[i+1] = (short int)( Yi_plus_1);
+		//The Y value is left as a fixed point value...
+		//Currently has scale factor 2^15, but should switch to be 2^14
+		//Need to shift y inputs of filter if doing so
 		
 	}
 	
