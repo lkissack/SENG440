@@ -3,9 +3,9 @@
 #include <string.h>
 //#include <iostream>
 
-#define MAX_INPUT_LENGTH 800	//max number of input samples that can be handled per function call
-#define MAX_FILT_LENGTH  500	//max filter length that can be hanled per function call	
-#define BUFF_LEN	(MAX_FILT_LENGTH - 1 + MAX_INPUT_LENGTH)
+#define MAX_INPUT_LENGTH 800    //max number of input samples that can be handled per function call
+#define MAX_FILT_LENGTH  500    //max filter length that can be hanled per function call    
+#define BUFF_LEN    (MAX_FILT_LENGTH - 1 + MAX_INPUT_LENGTH)
 #define SAMPLES   800
 #define upper_limit 0x3fffffff//
 #define lower_limit -0x40000000//
@@ -18,47 +18,51 @@ int16_t coeffs[ MAX_FILT_LENGTH ] =
 
 int16_t insamp[ BUFF_LEN ]; //16 bit, any point in specifying size?
 
-//FIR init
+
 // FIR init
 void FIR_Init( void )
 {
-    memset( insamp, 0, sizeof( insamp ) );
+    memset( insamp, 0, sizeof( insamp ) );//initiate space in memory
 }
-//initialize memory space?
+
 
 
 void FIR(int16_t *filter_coeffs, int16_t *input, int16_t *output, int length, int filt_length) //ints are 16bit define as such?
 {
 
-	
-	int32_t acc; //temporary accumulator for MAC operationv (32bit for 16bit input and 16bit for 8bit variables)
-	int16_t *h;	//pointer to filter coefficients
-	int16_t *x; //pointer to input samples
+    
+    int32_t acc; //temporary accumulator for MAC operationv (32bit for 16bit input and 16bit for 8bit variables)
+    int16_t *h; //pointer to filter coefficients
+    int16_t *x; //pointer to input samples
+    int32_t temp;
 
-	//copy the samples out of memory into the buffer?
-// put the new samples at the high end of the buffer   
+//copy the samples out of memory into the buffer   
  memcpy( &insamp[filt_length - 1], input, length * sizeof(int16_t));
 
 
-	for (int n = 0; n<length; n++)
-	{
-	h=filter_coeffs;
-	x=&insamp[filt_length - 1 + n];	//use memset??
-	acc = 1 << 14; //load rounding constant, what does this mean and how does it relate to input size? Perhaps it sets to 0 or half for a 32bit 
+    for (int n = 0; n<length; n++)
+    {
+    h=filter_coeffs;
+    x=&insamp[filt_length - 1 + n]; //assign address of sample
+    acc = 1 << 14; //load rounding constant, what does this mean and how does it relate to input size? Perhaps it sets to 0 or half for a 32bit 
 
-		for (int k = 0; k<filt_length; k++)
-		{
-			acc += (int32_t)(*h++)*(int32_t)(*x--);
-		}
+        for (int k = 0; k<filt_length; k++)
+        {
+            temp = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+            temp = temp + (1<<6); //rounding 
+            temp >>= 7;           //shift
+            acc = acc + temp;
+        }
 
-		if( acc > upper_limit){
-			acc=upper_limit;
-		} else if (acc < lower_limit) {
-			acc=lower_limit;
-		}
-		output[n] = (int16_t)(acc>>15);
-	
-		}
+
+      /*  if( acc > upper_limit){ //check if accumulator has saturated
+            acc=upper_limit;
+        } else if (acc < lower_limit) {
+            acc=lower_limit;
+        }*/
+        acc = acc + (1 << 14);
+        output[n] = (int16_t)(acc>>15);//convert to 16 bit
+        }
 
 //memove to shift samples 
  memmove(&insamp[0], &insamp[length], (filt_length - 1) * sizeof(int16_t) );
@@ -101,7 +105,7 @@ int main( void )
  
     fclose( in_fid );
     fclose( out_fid );
- 	
+    
     printf("Filtering Complete \n");
     printf("%d \n",(int)sizeof(coeffs));
 
