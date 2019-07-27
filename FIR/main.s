@@ -38,11 +38,11 @@ FIR_Init:
 FIR:
 	@ args = 4, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r3, r4, r5, r6, r7, r8, r9, r10, fp, lr}
+	push	{r4, r5, r6, r7, r8, r9, r10, lr}
 	mov	r5, r0
 	mov	r10, r2
 	mov	r9, r3
-	ldr	r4, [sp, #40]
+	ldr	r4, [sp, #32]
 	sub	r6, r4, #1
 	lsl	r6, r6, #1
 	movw	r3, #:lower16:insamp
@@ -54,36 +54,34 @@ FIR:
 	bl	memcpy
 	cmp	r9, #0
 	ble	.L4
-	sub	ip, r10, #2
+	sub	lr, r10, #2
 	mov	r0, r8
-	add	r8, ip, r7
-	add	r1, r6, #2
-	add	r1, r5, r1
-	mvn	lr, #-1073741824
+	add	r8, lr, r7
+	add	ip, r6, #2
+	add	ip, r5, ip
 	b	.L7
 .L8:
-	mov	r3, #16384
+	mov	r1, #16384
 .L5:
-	cmp	r3, #-1073741824
-	movlt	r3, #-1073741824
-	cmp	r3, lr
-	movge	r3, lr
-	asr	r3, r3, #15
-	strh	r3, [ip, #2]!	@ movhi
+	add	r1, r1, #16384
+	asr	r1, r1, #15
+	strh	r1, [lr, #2]!	@ movhi
 	add	r0, r0, #2
-	cmp	ip, r8
+	cmp	lr, r8
 	beq	.L4
 .L7:
 	mov	r9, r0
 	cmp	r4, #0
 	ble	.L8
 	mov	r2, r5
-	mov	r3, #16384
+	mov	r1, #16384
 .L6:
 	ldrsh	r10, [r2], #2
-	ldrsh	fp, [r9], #-2
-	mla	r3, fp, r10, r3
-	cmp	r2, r1
+	ldrsh	r3, [r9], #-2
+	mul	r3, r3, r10
+	add	r3, r3, #64
+	add	r1, r1, r3, asr #7
+	cmp	r2, ip
 	bne	.L6
 	b	.L5
 .L4:
@@ -92,7 +90,7 @@ FIR:
 	mov	r2, r6
 	add	r1, r0, r7
 	bl	memmove
-	pop	{r3, r4, r5, r6, r7, r8, r9, r10, fp, pc}
+	pop	{r4, r5, r6, r7, r8, r9, r10, pc}
 	.size	FIR, .-FIR
 	.align	2
 	.global	main
