@@ -65,7 +65,7 @@ void main(){
 		
 	}
 	printf("Outputting filter results\n");
-	for(i = 0; i<128;<i++){
+	for(i = 0; i<128;i++){
 		print(i);
 	}
 }
