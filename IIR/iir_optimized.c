@@ -2,6 +2,25 @@
 
 short int X[128], Y[128];
 
+union{
+	int Init[64];
+	short int input[128];
+} X;
+
+void filter_init_better(int *X, short int *Y){
+	register int i;
+	X[0] = 0x80018001;
+	
+	//decrement because we don't have any order dependencies
+	for(i = 63; i; i--){
+		X[i] = 0x7FFF7FFF;
+	}
+
+	Y[0] = Y[1] = (short int)0x8001;
+}
+
+
+
 void filter_init(short int *X, short int *Y){
 
 	register int i;
@@ -9,7 +28,8 @@ void filter_init(short int *X, short int *Y){
 	X[0] = X[1] = (short int) 0x8001;
 	
 	for(i =2; i<128; i++){
-		X[i] = (short int)0x7FFFF;
+		//optimize by using a union of an array of 64 ints filled with 0x7FFF7FFF
+		X[i] = (short int)0x7FFF;
 	}
 	Y[0] = Y[1] = (short int)0x8001;
 	
@@ -32,7 +52,7 @@ void main(){
 	
 	register int i;
 	
-	filter_init(X, Y);
+	filter_init_better(X.Init, Y);
 	
 	for (i =2; i< 128; i+=2){
 		//loading operations
