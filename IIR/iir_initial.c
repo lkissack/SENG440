@@ -8,7 +8,7 @@ void filter_init(short int *X, short int *Y){
 
 	X[0] = X[1] = (short int) 0x8001;
 	
-	for(i =2; i<100; i++){
+	for(i =2; i<128; i++){
 		X[i] = (short int)0x7FFFF;
 	}
 	Y[0] = Y[1] = (short int)0x8001;
@@ -33,7 +33,7 @@ void main(){
 	
 	filter_init(X, Y);
 	
-	for (i =2; i< 100; i++){
+	for (i =2; i< 128; i++){
 		tmp_0 = ((int)C0 *(int)X[i] + (1<<14))>>15;
 		tmp_1 = ((int)C1 *(int)X[i-1] + (1<<14))>>15;
 		tmp_2 = ((int)C2 *(int)X[i-2] + (1<<14))>>15;

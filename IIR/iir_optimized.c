@@ -8,7 +8,7 @@ void filter_init(short int *X, short int *Y){
 
 	X[0] = X[1] = (short int) 0x8001;
 	
-	for(i =2; i<100; i++){
+	for(i =2; i<128; i++){
 		X[i] = (short int)0x7FFFF;
 	}
 	Y[0] = Y[1] = (short int)0x8001;
@@ -34,13 +34,13 @@ void main(){
 	
 	filter_init(X, Y);
 	
-	for (i =2; i< 100; i+=2){
+	for (i =2; i< 128; i+=2){
 		//loading operations
 		//not sure what (1<<14) is doing?
-		int Xi = X[i];
-		int Xi_minus_1 = X[i-1];		
+		register int Xi = X[i];
+		register int Xi_minus_1 = X[i-1];		
 		tmp_2 = ((int)C2 *(int)X[i-2] + (1<<14))>>15;	
-		int Yi_minus_1 = Y[i-1];		
+		register int Yi_minus_1 = Y[i-1];		
 		tmp_4 = ((int)C0 *(int)Y[i-2] + (1<<14))>>15;
 		
 		//calculations
@@ -64,5 +64,8 @@ void main(){
 		//Need to shift y inputs of filter if doing so
 		
 	}
-	
+	printf("Outputting filter results\n");
+	for(i = 0; i<128;<i++){
+		print(i);
+	}
 }
