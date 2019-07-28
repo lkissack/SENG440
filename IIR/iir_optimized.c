@@ -21,7 +21,7 @@ void print(int i){
 
 void main(){
 
-	printf("Hello World\n");
+	//printf("Hello World\n");
 	register const short int C0 = 0x10C8;
 	register const short int C1 = 0x2190;
 	register const short int C2 = 0x10C8;
@@ -64,8 +64,8 @@ void main(){
 		//Need to shift y inputs of filter if doing so
 		
 	}
-	printf("Outputting filter results\n");
+	/*printf("Outputting filter results\n");
 	for(i = 0; i<128;i++){
 		print(i);
-	}
+	}*/
 }
