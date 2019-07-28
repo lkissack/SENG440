@@ -22,11 +22,11 @@ void print(int i){
 void main(){
 
 	printf("Hello World\n");
-	const short int C0 = 0x10C8;
-	const short int C1 = 0x2190;
-	const short int C2 = 0x10C8;
-	const short int C3 = 0x5FB7;
-	const short int C4 = 0xDD28;//Negative representation
+	register const short int C0 = 0x10C8;
+	register const short int C1 = 0x2190;
+	register const short int C2 = 0x10C8;
+	register const short int C3 = 0x5FB7;
+	register const short int C4 = 0xDD28;//Negative representation
 	
 	int tmp_0,tmp_1, tmp_2, tmp_3, tmp_4;
 	
@@ -37,10 +37,10 @@ void main(){
 	for (i =2; i< 128; i+=2){
 		//loading operations
 		//not sure what (1<<14) is doing?
-		register int Xi = X[i];
-		register int Xi_minus_1 = X[i-1];		
+		int Xi = X[i];
+		int Xi_minus_1 = X[i-1];		
 		tmp_2 = ((int)C2 *(int)X[i-2] + (1<<14))>>15;	
-		register int Yi_minus_1 = Y[i-1];		
+		int Yi_minus_1 = Y[i-1];		
 		tmp_4 = ((int)C0 *(int)Y[i-2] + (1<<14))>>15;
 		
 		//calculations
