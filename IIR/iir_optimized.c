@@ -7,7 +7,7 @@ union{
 	short int input[128];
 } X;
 
-void filter_init_better(int *X, short int *Y){
+void filter_init_better(int * restrict X, short int * restrict Y){
 	register int i;
 	X[0] = 0x80018001;
 	
