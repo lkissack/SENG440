@@ -61,7 +61,7 @@ void main(){
 		int Xi_minus_1 = X.input[i-1];		
 		tmp_2 = ((int)C2 *(int)X.input[i-2] + (1<<14))>>15;	
 		int Yi_minus_1 = Y[i-1];		
-		tmp_4 = ((int)C0 *(int)Y.input[i-2] + (1<<14))>>15;
+		tmp_4 = ((int)C0 *(int)Y[i-2] + (1<<14))>>15;
 		
 		//calculations
 		tmp_0 = ((int)C0 *(int)Xi + (1<<14))>>15;
