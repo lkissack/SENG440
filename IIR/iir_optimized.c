@@ -54,7 +54,7 @@ void main(){
 	
 	filter_init_better(X.Init, Y);
 	
-	for (i =2; i< 128; i+=2){
+	for (i =2; !(i&0x80); i+=2){
 		//loading operations
 		//not sure what (1<<14) is doing?
 		int Xi = X.input[i];
