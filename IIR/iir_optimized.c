@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-short int X[128], Y[128];
+short int Y[128];
 
 union{
 	int Init[64];
