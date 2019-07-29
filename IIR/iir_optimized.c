@@ -57,11 +57,11 @@ void main(){
 	for (i =2; i< 128; i+=2){
 		//loading operations
 		//not sure what (1<<14) is doing?
-		int Xi = X[i];
-		int Xi_minus_1 = X[i-1];		
-		tmp_2 = ((int)C2 *(int)X[i-2] + (1<<14))>>15;	
+		int Xi = X.input[i];
+		int Xi_minus_1 = X.input[i-1];		
+		tmp_2 = ((int)C2 *(int)X.input[i-2] + (1<<14))>>15;	
 		int Yi_minus_1 = Y[i-1];		
-		tmp_4 = ((int)C0 *(int)Y[i-2] + (1<<14))>>15;
+		tmp_4 = ((int)C0 *(int)Y.input[i-2] + (1<<14))>>15;
 		
 		//calculations
 		tmp_0 = ((int)C0 *(int)Xi + (1<<14))>>15;
@@ -69,7 +69,7 @@ void main(){
 		tmp_3 = ((int)C3 *(int)Yi_minus_1 + (1<<14))>>15;
 		int Yi = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
 						
-		tmp_0 = ((int)C0 *(int)X[i+1] + (1<<14))>>15;
+		tmp_0 = ((int)C0 *(int)X.input[i+1] + (1<<14))>>15;
 		tmp_1 = ((int)C1 *(int)Xi + (1<<14))>>15;
 		tmp_2 = ((int)C2 *(int)Xi_minus_1 + (1<<14))>>15;
 		tmp_3 = ((int)C3 *(int)Yi + (1<<14))>>15;
