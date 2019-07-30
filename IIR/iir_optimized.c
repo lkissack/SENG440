@@ -1,6 +1,25 @@
 #include <stdio.h>
 
-short int X[128], Y[128];
+short int Y[128];
+
+union{
+	int Init[64];
+	short int input[128];
+} X;
+
+void filter_init_better(int * restrict X, short int * restrict Y){
+	register int i;
+	X[0] = 0x80018001;
+	
+	//decrement because we don't have any order dependencies
+	for(i = 63; i; i--){
+		X[i] = 0x7FFF7FFF;
+	}
+
+	Y[0] = Y[1] = (short int)0x8001;
+}
+
+
 
 void filter_init(short int *X, short int *Y){
 
@@ -8,8 +27,9 @@ void filter_init(short int *X, short int *Y){
 
 	X[0] = X[1] = (short int) 0x8001;
 	
-	for(i =2; i<100; i++){
-		X[i] = (short int)0x7FFFF;
+	for(i =2; i<128; i++){
+		//optimize by using a union of an array of 64 ints filled with 0x7FFF7FFF
+		X[i] = (short int)0x7FFF;
 	}
 	Y[0] = Y[1] = (short int)0x8001;
 	
@@ -21,7 +41,7 @@ void print(int i){
 
 void main(){
 
-	printf("Hello World\n");
+	//printf("Hello World\n");
 	const short int C0 = 0x10C8;
 	const short int C1 = 0x2190;
 	const short int C2 = 0x10C8;
@@ -32,29 +52,29 @@ void main(){
 	
 	register int i;
 	
-	filter_init(X, Y);
+	filter_init_better(X.Init, Y);
 	
-	for (i =2; i< 100; i+=2){
+	for (i =2; !(i&0x80); i+=2){
 		//loading operations
 		//not sure what (1<<14) is doing?
-		int Xi = X[i];
-		int Xi_minus_1 = X[i-1];		
-		tmp_2 = ((int)C2 *(int)X[i-2] + (1<<14))>>15;	
-		int Yi_minus_1 = Y[i-1];		
+		register int Xi = X.input[i];
+		register int Xi_minus_1 = X.input[i-1];		
+		tmp_2 = ((int)C2 *(int)X.input[i-2] + (1<<14))>>15;	
+		register int Yi_minus_1 = Y[i-1];		
 		tmp_4 = ((int)C0 *(int)Y[i-2] + (1<<14))>>15;
 		
 		//calculations
 		tmp_0 = ((int)C0 *(int)Xi + (1<<14))>>15;
 		tmp_1 = ((int)C1 *(int)Xi_minus_1 + (1<<14))>>15;
 		tmp_3 = ((int)C3 *(int)Yi_minus_1 + (1<<14))>>15;
-		int Yi = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
+		register int Yi = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
 						
-		tmp_0 = ((int)C0 *(int)X[i+1] + (1<<14))>>15;
+		tmp_0 = ((int)C0 *(int)X.input[i+1] + (1<<14))>>15;
 		tmp_1 = ((int)C1 *(int)Xi + (1<<14))>>15;
 		tmp_2 = ((int)C2 *(int)Xi_minus_1 + (1<<14))>>15;
 		tmp_3 = ((int)C3 *(int)Yi + (1<<14))>>15;
 		tmp_4 = ((int)C0 *(int)Yi_minus_1 + (1<<14))>>15;
-		int Yi_plus_1 = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
+		register int Yi_plus_1 = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
 		
 		//storing operations
 		Y[i] = (short int)( Yi);
@@ -64,5 +84,8 @@ void main(){
 		//Need to shift y inputs of filter if doing so
 		
 	}
-	
+	/*printf("Outputting filter results\n");
+	for(i = 0; i<128;i++){
+		print(i);
+	}*/
 }
