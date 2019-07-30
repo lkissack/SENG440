@@ -84,8 +84,8 @@ void main(){
 		//Need to shift y inputs of filter if doing so
 		
 	}
-	/*printf("Outputting filter results\n");
+	printf("Outputting filter results\n");
 	for(i = 0; i<128;i++){
 		print(i);
-	}*/
+	}
 }
