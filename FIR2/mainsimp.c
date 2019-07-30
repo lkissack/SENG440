@@ -16,56 +16,63 @@ int16_t coeffs[ MAX_FILT_LENGTH ] =
 };
  
 
-int16_t insamp[ BUFF_LEN ]; //16 bit, any point in specifying size?
+int16_t buffer[ BUFF_LEN ]; //16 bit, any point in specifying size?
 
 
 void FIR_Init( void )
 {
-    memset( insamp, 0, sizeof( insamp ) );//initiate space in memory
+    memset( buffer, 0, sizeof( buffer ) );//initiate space in memory
 } 
 
 
-void FIR(int16_t *filter_coeffs, int16_t *input, int16_t *output, int length, int filt_length) //ints are 16bit define as such?
+void FIR(int16_t *output, int length) //ints are 16bit define as such?
 {
 
-    
     int32_t acc; //temporary accumulator for MAC operationv (32bit for 16bit input and 16bit for 8bit variables)
     int16_t h; //pointer to filter coefficients
     int16_t x; //pointer to input samples
     int32_t temp;
-    int j = 0;
+    register int j = 0;
 
 //copy the samples out of memory into the buffer   
 
     for (int n = 0; n<length; n++)
     {
-    j = filt_length + n -1;
-    //acc = 1 << 14; //load rounding constant, what does this mean and how does it relate to input size? Perhaps it sets to 0 or half for a 32bit 
 
-        for (int k = 0; k<=filt_length; k++)
+    j = (MAX_FILT_LENGTH + n - 1);
+    
+        for (int k = 0; k<=(MAX_FILT_LENGTH); k++)
         {
-            temp = (int32_t)filter_coeffs[k]*(int32_t)(input[j-k]); //perform multiplication and add to accumulator
+            temp = (int32_t)(coeffs[k])*(int32_t)(buffer[j-k]); //perform multiplication and add to accumulator
             temp = temp + (1<<6); //rounding 
             temp >>= 7;           //shift
             acc = acc + temp;
         }
 
 
-      /*  if( acc > upper_limit){ //check if accumulator has saturated
+        if( acc > upper_limit){ //check if accumulator has saturated
             acc=upper_limit;
         } else if (acc < lower_limit) {
             acc=lower_limit;
-        }*/
+        }
         acc = acc + (1 << 14);
         output[n] = (int16_t)(acc>>15);//convert to 16 bit
         }
 
 //memove to shift samples 
- memmove(&insamp[0], &insamp[length], (filt_length-1) * sizeof(int16_t) );
+ 
+}
+
+
+void copy_to_buffer(int16_t *input, int length) {
+
+ memcpy( &buffer[MAX_FILT_LENGTH - 1], input, length * sizeof(int16_t));
+
 }
 
 int main( void )
 {
+    FIR_Init();
     int size;
     int16_t input[SAMPLES];
     int16_t output[SAMPLES];
@@ -87,16 +94,23 @@ int main( void )
     }
  
     // initialize the filter
- 
+  
  
     // process all of the samples
     do {
         // read samples from file
-        size = fread(  &insamp[MAX_FILT_LENGTH-1], sizeof(int16_t), SAMPLES, in_fid );
+
+        size = fread(input, sizeof(int16_t), SAMPLES, in_fid );
+        copy_to_buffer(input,size);
         // perform the filtering
-        FIR( coeffs, insamp, output, size, MAX_FILT_LENGTH );
+        FIR( output, size);
+   
+        memmove(&buffer[0], &buffer[size], (MAX_FILT_LENGTH-1) * sizeof(int16_t) );
         // write samples to file
         fwrite( output, sizeof(int16_t), size, out_fid );
+
+        
+
     } while ( size != 0 );
  
     fclose( in_fid );
