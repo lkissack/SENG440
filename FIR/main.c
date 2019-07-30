@@ -37,6 +37,7 @@ void FIR(int16_t *filter_coeffs, int16_t *input, int16_t *output, int length, in
     register int16_t *x; //pointer to input samples
     register int32_t temp1 = 0;
     register int32_t temp2 = 0;
+    register int32_t temp3 = 0;
 
 //copy the samples out of memory into the buffer   
  memcpy( &insamp[filt_length - 1], input, length * sizeof(int16_t));
@@ -46,29 +47,47 @@ void FIR(int16_t *filter_coeffs, int16_t *input, int16_t *output, int length, in
     {
     h=filter_coeffs;
     x=&insamp[filt_length - 1 + n]; //assign address of sample
-    acc = (1 << 14);
 
-	temp1 = (int32_t)(*h++)*(int32_t)(*x--);
-	temp2 = (int32_t)(*h++)*(int32_t)(*x--);
-	temp1 =+ (1<<6); //rounding 
-    temp1 >>= 7;
+    acc = (1 << 14);// preload rounding constant
+
+	//temp1 = (int32_t)(*h++)*(int32_t)(*x--);
+	//temp2 = (int32_t)(*h++)*(int32_t)(*x--);
+	//temp1 += (1<<6); //rounding 
+    //temp1 >>= 7;
   
 
-        for (k = 2; k < ((filt_length-1)>>1); k++)
+        for (k = 0; k < ((filt_length)>>2); k++)
         {  
             acc = acc + temp1;
+
             temp1 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
             
-            temp2 = temp2 + (1<<4); //rounding 
+            temp2 += (1<<4); //rounding 
             temp2 >>= 5;     //shift
 
             acc = acc + temp2;
+
             temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
             
-            temp1 = temp1 + (1<<4); //rounding 
+            //temp1 += (1<<4); //rounding 
+            //temp1 >>= 5;     //shift
+
+            //acc = acc + temp1;
+            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+            //temp2 += (1<<4); //rounding 
+            //temp2 >>= 5;     //shift
+
+            //acc = acc + temp2;
+            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+            
+            temp1 += (1<<4); //rounding 
             temp1 >>= 5;     //shift
+
         }
+        
         acc=acc+temp1;
+        temp2 += (1<<4); //rounding 
+        temp2 >>= 5;     //shift
         acc=acc+temp2;
 
 
