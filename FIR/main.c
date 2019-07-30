@@ -31,40 +31,57 @@ void FIR(int16_t *filter_coeffs, int16_t *input, int16_t *output, int length, in
 {
 
     
-    int32_t acc; //temporary accumulator for MAC operationv (32bit for 16bit input and 16bit for 8bit variables)
-    int16_t *h; //pointer to filter coefficients
-    int16_t *x; //pointer to input samples
-    int32_t temp;
+    register int32_t acc; //temporary accumulator for MAC operationv (32bit for 16bit input and 16bit for 8bit variables)
+    register int n,k = 0;
+    register int16_t *h; //pointer to filter coefficients
+    register int16_t *x; //pointer to input samples
+    register int32_t temp1 = 0;
+    register int32_t temp2 = 0;
 
 //copy the samples out of memory into the buffer   
  memcpy( &insamp[filt_length - 1], input, length * sizeof(int16_t));
 
 
-    for (int n = 0; n<length; n++)
+    for (n = 0; n<length; n++)
     {
     h=filter_coeffs;
     x=&insamp[filt_length - 1 + n]; //assign address of sample
-    acc = 1 << 14; //load rounding constant, what does this mean and how does it relate to input size? Perhaps it sets to 0 or half for a 32bit 
+    acc = (1 << 14);
 
-        for (int k = 0; k<filt_length; k++)
-        {
-            temp = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-            temp = temp + (1<<6); //rounding 
-            temp >>= 7;           //shift
-            acc = acc + temp;
+	temp1 = (int32_t)(*h++)*(int32_t)(*x--);
+	temp2 = (int32_t)(*h++)*(int32_t)(*x--);
+	temp1 =+ (1<<6); //rounding 
+    temp1 >>= 7;
+  
+
+        for (k = 2; k < ((filt_length-1)>>1); k++)
+        {  
+            acc = acc + temp1;
+            temp1 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+            
+            temp2 = temp2 + (1<<4); //rounding 
+            temp2 >>= 5;     //shift
+
+            acc = acc + temp2;
+            temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+            
+            temp1 = temp1 + (1<<4); //rounding 
+            temp1 >>= 5;     //shift
         }
+        acc=acc+temp1;
+        acc=acc+temp2;
 
 
-      /*  if( acc > upper_limit){ //check if accumulator has saturated
+       /*  if( acc > upper_limit){ //check if accumulator has saturated
             acc=upper_limit;
         } else if (acc < lower_limit) {
             acc=lower_limit;
         }*/
-        acc = acc + (1 << 14);
+        
         output[n] = (int16_t)(acc>>15);//convert to 16 bit
         }
 
-//memove to shift samples 
+//memove to shift samples to bottom of buffer
  memmove(&insamp[0], &insamp[length], (filt_length - 1) * sizeof(int16_t) );
 }
 
@@ -107,7 +124,7 @@ int main( void )
     fclose( out_fid );
     
     printf("Filtering Complete \n");
-    printf("%d \n",(int)sizeof(coeffs));
+    //printf("%d \n",(int)sizeof(coeffs));
 
 
     return 0;
