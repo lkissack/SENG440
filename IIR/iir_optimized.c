@@ -82,18 +82,26 @@ void main(){
 		//tmp_4 = ((int)C4 *(int)Y[i-2] + (1<<14))>>15;
 		
 		//calculations
-		tmp_0 = ROUND_SHIFT((int)C0 *(int)Xi + (1<<14));
-		tmp_1 = ROUND_SHIFT((int)C1 *(int)Xi_minus_1 + (1<<14));
-		tmp_3 = ROUND_SHIFT((int)C3 *(int)Yi_minus_1 + (1<<14));
+		register int t0 = (int)C0 *(int)Xi + (1<<14);
+		tmp_0 = ROUND_SHIFT(t0);
+		register int t1 = (int)C1 *(int)Xi_minus_1 + (1<<14);
+		tmp_1 = ROUND_SHIFT(t1);
+		register int t3 = (int)C3 *(int)Yi_minus_1 + (1<<14);
+		tmp_3 = ROUND_SHIFT(t3);
 		//register int Yi = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
 		//Y[i] = short_int_clipping(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 		Y[i] = (short int) SHORT_INT_CLIPPING(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 		
-		tmp_0 = ROUND_SHIFT((int)C0 *(int)X.input[i+1] + (1<<14));
-		tmp_1 = ROUND_SHIFT((int)C1 *(int)Xi + (1<<14));
-		tmp_2 = ROUND_SHIFT((int)C2 *(int)Xi_minus_1 + (1<<14));
-		tmp_3 = ROUND_SHIFT((int)C3 *(int)Y[i] + (1<<14));
-		tmp_4 = ROUND_SHIFT((int)C4 *(int)Yi_minus_1 + (1<<14));
+		t0 = (int)C0 *(int)X.input[i+1] + (1<<14)
+		tmp_0 = ROUND_SHIFT(t0);
+		t1 = (int)C1 *(int)Xi + (1<<14);
+		tmp_1 = ROUND_SHIFT(t1);
+		t2 = (int)C2 *(int)Xi_minus_1 + (1<<14);
+		tmp_2 = ROUND_SHIFT(t2);
+		t3 = (int)C3 *(int)Y[i] + (1<<14);
+		tmp_3 = ROUND_SHIFT(t3);
+		t4 = (int)C4 *(int)Yi_minus_1 + (1<<14);
+		tmp_4 = ROUND_SHIFT(t4);
 		//register int Yi_plus_1 = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
 		
 		//storing operations
