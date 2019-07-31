@@ -98,8 +98,8 @@ void main(){
 		//Currently has scale factor 2^15, but should switch to be 2^14
 		//Need to shift y inputs of filter if doing so
 		
-		print(i);
-		print(i+1);
+		//print(i);
+		//print(i+1);
 		
 	}
 	}
