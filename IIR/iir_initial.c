@@ -39,37 +39,28 @@ int round_shift(int a){
 int main(){
 
 	int run;
-	for (run = 0; run <1000; run++){
-		const short int C0 = 0x10C8;
-		const short int C1 = 0x2190;
-		const short int C2 = 0x10C8;
-		const short int C3 = 0x5FB7;
-		const short int C4 = 0xDD28;//Negative representation
+	const short int C0 = 0x10C8;
+	const short int C1 = 0x2190;
+	const short int C2 = 0x10C8;
+	const short int C3 = 0x5FB7;
+	const short int C4 = 0xDD28;//Negative representation
 
-		int tmp_0,tmp_1, tmp_2, tmp_3, tmp_4;
+	int tmp_0,tmp_1, tmp_2, tmp_3, tmp_4;
 
-		register int i;
-
-		filter_init(X, Y);
-
-		for (i =2; i< 128; i++){
-			/*tmp_0 = ((int)C0 *(int)X[i] + (1<<14))>>15;
-			tmp_1 = ((int)C1 *(int)X[i-1] + (1<<14))>>15;
-			tmp_2 = ((int)C2 *(int)X[i-2] + (1<<14))>>15;
-			tmp_3 = ((int)C3 *(int)Y[i-1] + (1<<14))>>15;
-			tmp_4 = ((int)C4 *(int)Y[i-2] + (1<<14))>>15;*/
-
-			tmp_0 = round_shift((int)C0 *(int)X[i] + (1<<14));
-			tmp_1 = round_shift((int)C1 *(int)X[i-1] + (1<<14));
-			tmp_2 = round_shift((int)C2 *(int)X[i-2] + (1<<14));
-			tmp_3 = round_shift((int)C3 *(int)Y[i-1] + (1<<14));
-			tmp_4 = round_shift((int)C4 *(int)Y[i-2] + (1<<14));
-
-			Y[i] = short_int_clipping( tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
-			//print(i);
-		}
-	}
+	register int i;
 	
+	filter_init(X, Y);
+	for (i =2; i< 128; i++){
+
+		tmp_0 = round_shift((int)C0 *(int)X[i] + (1<<14));
+		tmp_1 = round_shift((int)C1 *(int)X[i-1] + (1<<14));
+		tmp_2 = round_shift((int)C2 *(int)X[i-2] + (1<<14));
+		tmp_3 = round_shift((int)C3 *(int)Y[i-1] + (1<<14));
+		tmp_4 = round_shift((int)C4 *(int)Y[i-2] + (1<<14));
+
+		Y[i] = short_int_clipping( tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
+			//print(i);
+	}			
 	
 	return 0;
 	
