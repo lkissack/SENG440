@@ -86,8 +86,9 @@ void main(){
 		tmp_1 = ROUND_SHIFT((int)C1 *(int)Xi_minus_1 + (1<<14));
 		tmp_3 = ROUND_SHIFT((int)C3 *(int)Yi_minus_1 + (1<<14));
 		//register int Yi = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
-		Y[i] = short_int_clipping(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
-						
+		//Y[i] = short_int_clipping(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
+		Y[i] = (short int) SHORT_INT_CLIPPING(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
+		
 		tmp_0 = ROUND_SHIFT((int)C0 *(int)X.input[i+1] + (1<<14));
 		tmp_1 = ROUND_SHIFT((int)C1 *(int)Xi + (1<<14));
 		tmp_2 = ROUND_SHIFT((int)C2 *(int)Xi_minus_1 + (1<<14));
@@ -96,8 +97,9 @@ void main(){
 		//register int Yi_plus_1 = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
 		
 		//storing operations
-		Y[i+1] = short_int_clipping(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
+		//Y[i+1] = short_int_clipping(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 		//Y[i] = (short int)( Yi);
+		Y[i+1] = (short int) SHORT_INT_CLIPPING(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 		//Y[i+1] = (short int)( Yi_plus_1);
 		//The Y value is left as a fixed point value...
 		//Currently has scale factor 2^15, but should switch to be 2^14
