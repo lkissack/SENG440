@@ -1,5 +1,5 @@
 #include <stdio.h>
-#define ROUND_SHIFT(x) ((x)&0x7FFF ? (x|=0x8000)>>15 : (x)>>15 ) 
+#define ROUND_SHIFT(x) ((x)&0x7FFF ? ((x)|0x8000)>>15 : (x)>>15 ) 
 
 short int Y[128];
 
