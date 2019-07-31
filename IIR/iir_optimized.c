@@ -1,5 +1,10 @@
 #include <stdio.h>
 #define ROUND_SHIFT(x) ((x)&0x7FFF ? ((x)|0x8000)>>15 : (x)>>15 ) 
+#define SHORT_INT_CLIPPING(x){\
+	(x) >= 32767 ? (x) = 32767 : (x);\
+	(x) <= -32767 ? (x) = -32767 : (x);\
+	}
+
 
 short int Y[128];
 
