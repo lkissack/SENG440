@@ -30,7 +30,7 @@ short int short_int_clipping(int a){
 }
 
 int round_shift(int a){
-	printf("a: 0x%hX", a);
+	printf("a: 0x%hX\n", a);
 	if(a&0x7FFF)
 		a|=0x8000;
 	return a>>15;
