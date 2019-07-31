@@ -20,8 +20,6 @@ void filter_init_better(int * restrict X, short int * restrict Y){
 	Y[0] = Y[1] = (short int)0x8001;
 }
 
-
-
 void filter_init(short int *X, short int *Y){
 
 	register int i;
@@ -34,6 +32,16 @@ void filter_init(short int *X, short int *Y){
 	}
 	Y[0] = Y[1] = (short int)0x8001;
 	
+}
+
+short int short_int_clipping(int a){
+	int tmp = a;
+	if(tmp >= 32767)
+		tmp = 32767;
+	if(tmp <= -32767)
+		tmp = -32767;
+	
+	return (short int) tmp;
 }
 
 void print(int i){
@@ -70,18 +78,20 @@ void main(){
 		tmp_0 = ((int)C0 *(int)Xi + (1<<14))>>15;
 		tmp_1 = ((int)C1 *(int)Xi_minus_1 + (1<<14))>>15;
 		tmp_3 = ((int)C3 *(int)Yi_minus_1 + (1<<14))>>15;
-		register int Yi = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
+		//register int Yi = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
+		Y[i] = short_int_clipping(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 						
 		tmp_0 = ((int)C0 *(int)X.input[i+1] + (1<<14))>>15;
 		tmp_1 = ((int)C1 *(int)Xi + (1<<14))>>15;
 		tmp_2 = ((int)C2 *(int)Xi_minus_1 + (1<<14))>>15;
 		tmp_3 = ((int)C3 *(int)Yi + (1<<14))>>15;
 		tmp_4 = ((int)C4 *(int)Yi_minus_1 + (1<<14))>>15;
-		register int Yi_plus_1 = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
+		//register int Yi_plus_1 = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
 		
 		//storing operations
-		Y[i] = (short int)( Yi);
-		Y[i+1] = (short int)( Yi_plus_1);
+		Y[i+1] = short_int_clipping(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
+		//Y[i] = (short int)( Yi);
+		//Y[i+1] = (short int)( Yi_plus_1);
 		//The Y value is left as a fixed point value...
 		//Currently has scale factor 2^15, but should switch to be 2^14
 		//Need to shift y inputs of filter if doing so
