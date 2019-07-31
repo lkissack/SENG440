@@ -479,7 +479,7 @@ main:
 	qadd	r2, r2, r3	@ _34, _33, tmp236
 	ldr	r3, [fp, #-48]	@ tmp237, tmp_4
 	qadd	r3, r2, r3	@ _35, _34, tmp237
-@	movw	r2, #32767	@ tmp238,
+	movw	r2, #32767	@ tmp238,
 @	cmp	r3, r2	@ _35, tmp238
 @	movlt	r3, r3	@ _36, _35
 @	movge	r3, r2	@ _36, tmp238
@@ -614,7 +614,7 @@ main:
 	qadd	r2, r2, r3	@ _69, _68, tmp256
 	ldr	r3, [fp, #-48]	@ tmp257, tmp_4
 	qadd	r3, r2, r3	@ _70, _69, tmp257
-@	movw	r2, #32767	@ tmp258,
+	movw	r2, #32767	@ tmp258,
 @	cmp	r3, r2	@ _70, tmp258
 @	movlt	r3, r3	@ _71, _70
 @	movge	r3, r2	@ _71, tmp258
