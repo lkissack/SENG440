@@ -478,17 +478,17 @@ main:
 @ iir_optimized.c:93: 		Y[i] = (short int) SHORT_INT_CLIPPING(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 	ldr	r2, [fp, #-56]	@ tmp233, tmp_0
 	ldr	r3, [fp, #-60]	@ tmp234, tmp_1
-	add	r2, r2, r3	@ _32, tmp233, tmp234
+	qadd	r2, r2, r3	@ _32, tmp233, tmp234
 	ldr	r3, [fp, #-48]	@ tmp235, tmp_2
-	add	r2, r2, r3	@ _33, _32, tmp235
+	qadd	r2, r2, r3	@ _33, _32, tmp235
 	ldr	r3, [fp, #-64]	@ tmp236, tmp_3
-	add	r2, r2, r3	@ _34, _33, tmp236
+	qadd	r2, r2, r3	@ _34, _33, tmp236
 	ldr	r3, [fp, #-52]	@ tmp237, tmp_4
-	add	r3, r2, r3	@ _35, _34, tmp237
-	movw	r2, #32767	@ tmp238,
-	cmp	r3, r2	@ _35, tmp238
-	movlt	r3, r3	@ _36, _35
-	movge	r3, r2	@ _36, tmp238
+	qadd	r3, r2, r3	@ _35, _34, tmp237
+@	movw	r2, #32767	@ tmp238,
+@	cmp	r3, r2	@ _35, tmp238
+@	movlt	r3, r3	@ _36, _35
+@	movge	r3, r2	@ _36, tmp238
 @ iir_optimized.c:93: 		Y[i] = (short int) SHORT_INT_CLIPPING(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 	sxth	r2, r3	@ _37, _36
 	movw	r3, #:lower16:Y	@ tmp239,
@@ -613,17 +613,17 @@ main:
 @ iir_optimized.c:110: 		Y[i+1] = (short int) SHORT_INT_CLIPPING(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 	ldr	r2, [fp, #-56]	@ tmp253, tmp_0
 	ldr	r3, [fp, #-60]	@ tmp254, tmp_1
-	add	r2, r2, r3	@ _67, tmp253, tmp254
+	qadd	r2, r2, r3	@ _67, tmp253, tmp254
 	ldr	r3, [fp, #-48]	@ tmp255, tmp_2
-	add	r2, r2, r3	@ _68, _67, tmp255
+	qadd	r2, r2, r3	@ _68, _67, tmp255
 	ldr	r3, [fp, #-64]	@ tmp256, tmp_3
-	add	r2, r2, r3	@ _69, _68, tmp256
+	qadd	r2, r2, r3	@ _69, _68, tmp256
 	ldr	r3, [fp, #-52]	@ tmp257, tmp_4
-	add	r3, r2, r3	@ _70, _69, tmp257
-	movw	r2, #32767	@ tmp258,
-	cmp	r3, r2	@ _70, tmp258
-	movlt	r3, r3	@ _71, _70
-	movge	r3, r2	@ _71, tmp258
+	qadd	r3, r2, r3	@ _70, _69, tmp257
+@	movw	r2, #32767	@ tmp258,
+@	cmp	r3, r2	@ _70, tmp258
+@	movlt	r3, r3	@ _71, _70
+@	movge	r3, r2	@ _71, tmp258
 @ iir_optimized.c:110: 		Y[i+1] = (short int) SHORT_INT_CLIPPING(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 	add	r1, r4, #1	@ _72, i,
 @ iir_optimized.c:110: 		Y[i+1] = (short int) SHORT_INT_CLIPPING(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
@@ -639,7 +639,7 @@ main:
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
 	and	r3, r4, #128	@ _78, i,
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
-	cmp	r3, #0	@ _78,
+@	cmp	r3, #0	@ _78,
 	beq	.L37		@,
 @ iir_optimized.c:56: 	for(run = 0; run<10000; run++){
 	ldr	r3, [fp, #-32]	@ tmp268, run
