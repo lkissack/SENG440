@@ -293,33 +293,27 @@ print:
 	.fpu vfpv3-d16
 	.type	main, %function
 main:
-	@ args = 0, pretend = 0, frame = 40
+	@ args = 0, pretend = 0, frame = 32
 	@ frame_needed = 1, uses_anonymous_args = 0
 	push	{r4, r5, r6, r7, r8, fp, lr}	@
 	add	fp, sp, #24	@,,
-	sub	sp, sp, #44	@,,
-@ iir_optimized.c:56: 	for(run = 0; run<10000; run++){
-	mov	r3, #0	@ tmp207,
-	str	r3, [fp, #-32]	@ tmp207, run
-@ iir_optimized.c:56: 	for(run = 0; run<10000; run++){
-	b	.L15		@
-.L38:
+	sub	sp, sp, #36	@,,
 @ iir_optimized.c:59: 	const short int C0 = 0x10C8;
 	movw	r3, #4296	@ tmp209,
-	strh	r3, [fp, #-34]	@ movhi	@ tmp208, C0
+	strh	r3, [fp, #-30]	@ movhi	@ tmp208, C0
 @ iir_optimized.c:60: 	const short int C1 = 0x2190;
 	movw	r3, #8592	@ tmp211,
-	strh	r3, [fp, #-36]	@ movhi	@ tmp210, C1
+	strh	r3, [fp, #-32]	@ movhi	@ tmp210, C1
 @ iir_optimized.c:61: 	const short int C2 = 0x10C8;
 	movw	r3, #4296	@ tmp213,
-	strh	r3, [fp, #-38]	@ movhi	@ tmp212, C2
+	strh	r3, [fp, #-34]	@ movhi	@ tmp212, C2
 @ iir_optimized.c:62: 	const short int C3 = 0x5FB7;
 	movw	r3, #24503	@ tmp215,
-	strh	r3, [fp, #-40]	@ movhi	@ tmp214, C3
+	strh	r3, [fp, #-36]	@ movhi	@ tmp214, C3
 @ iir_optimized.c:63: 	const short int C4 = 0xDD28;//Negative representation
 	movw	r3, #56616	@ tmp217,
 	movt	r3, 65535	@ tmp217,
-	strh	r3, [fp, #-42]	@ movhi	@ tmp216, C4
+	strh	r3, [fp, #-38]	@ movhi	@ tmp216, C4
 @ iir_optimized.c:69: 	filter_init_better(X.Init, Y);
 	movw	r1, #:lower16:Y	@,
 	movt	r1, #:upper16:Y	@,
@@ -329,8 +323,8 @@ main:
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
 	mov	r4, #2	@ i,
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
-	b	.L16		@
-.L37:
+	b	.L15		@
+.L36:
 @ iir_optimized.c:74: 		register int Xi = X.input[i];
 	movw	r3, #:lower16:X	@ tmp218,
 	movt	r3, #:upper16:X	@ tmp218,
@@ -350,7 +344,7 @@ main:
 @ iir_optimized.c:75: 		register int Xi_minus_1 = X.input[i-1];	
 	mov	r7, r3	@ Xi_minus_1, _3
 @ iir_optimized.c:76: 		register int t2 = (int)C2 *(int)X.input[i-2] + (1<<14);
-	ldrsh	r2, [fp, #-38]	@ _4, C2
+	ldrsh	r2, [fp, #-34]	@ _4, C2
 @ iir_optimized.c:76: 		register int t2 = (int)C2 *(int)X.input[i-2] + (1<<14);
 	sub	r1, r4, #2	@ _5, i,
 @ iir_optimized.c:76: 		register int t2 = (int)C2 *(int)X.input[i-2] + (1<<14);
@@ -366,17 +360,17 @@ main:
 @ iir_optimized.c:77: 		tmp_2 = ROUND_SHIFT(t2);
 	uxth	r3, r5	@ _9, t2
 	cmp	r3, #0	@ _9,
-	beq	.L17		@,
+	beq	.L16		@,
 @ iir_optimized.c:77: 		tmp_2 = ROUND_SHIFT(t2);
 	asr	r3, r5, #15	@ _10, t2,
 	orr	r3, r3, #1	@ iftmp.2_81, _10,
-	b	.L18		@
-.L17:
+	b	.L17		@
+.L16:
 @ iir_optimized.c:77: 		tmp_2 = ROUND_SHIFT(t2);
 	asr	r3, r5, #15	@ iftmp.2_81, t2,
-.L18:
+.L17:
 @ iir_optimized.c:77: 		tmp_2 = ROUND_SHIFT(t2);
-	str	r3, [fp, #-48]	@ iftmp.2_81, tmp_2
+	str	r3, [fp, #-44]	@ iftmp.2_81, tmp_2
 @ iir_optimized.c:79: 		register int Yi_minus_1 = Y[i-1];
 	sub	r2, r4, #1	@ _11, i,
 @ iir_optimized.c:79: 		register int Yi_minus_1 = Y[i-1];
@@ -388,7 +382,7 @@ main:
 @ iir_optimized.c:79: 		register int Yi_minus_1 = Y[i-1];
 	mov	r6, r3	@ Yi_minus_1, _12
 @ iir_optimized.c:80: 		register int t4 = (int)C4 *(int)Y[i-2] + (1<<14);
-	ldrsh	r2, [fp, #-42]	@ _13, C4
+	ldrsh	r2, [fp, #-38]	@ _13, C4
 @ iir_optimized.c:80: 		register int t4 = (int)C4 *(int)Y[i-2] + (1<<14);
 	sub	r1, r4, #2	@ _14, i,
 @ iir_optimized.c:80: 		register int t4 = (int)C4 *(int)Y[i-2] + (1<<14);
@@ -404,19 +398,19 @@ main:
 @ iir_optimized.c:81: 		tmp_4 = ROUND_SHIFT(t4);
 	uxth	r3, r5	@ _18, t4
 	cmp	r3, #0	@ _18,
-	beq	.L19		@,
+	beq	.L18		@,
 @ iir_optimized.c:81: 		tmp_4 = ROUND_SHIFT(t4);
 	asr	r3, r5, #15	@ _19, t4,
 	orr	r3, r3, #1	@ iftmp.3_82, _19,
-	b	.L20		@
-.L19:
+	b	.L19		@
+.L18:
 @ iir_optimized.c:81: 		tmp_4 = ROUND_SHIFT(t4);
 	asr	r3, r5, #15	@ iftmp.3_82, t4,
-.L20:
+.L19:
 @ iir_optimized.c:81: 		tmp_4 = ROUND_SHIFT(t4);
-	str	r3, [fp, #-52]	@ iftmp.3_82, tmp_4
+	str	r3, [fp, #-48]	@ iftmp.3_82, tmp_4
 @ iir_optimized.c:85: 		register int t0 = (int)C0 *(int)Xi + (1<<14);
-	ldrsh	r3, [fp, #-34]	@ _20, C0
+	ldrsh	r3, [fp, #-30]	@ _20, C0
 @ iir_optimized.c:85: 		register int t0 = (int)C0 *(int)Xi + (1<<14);
 	mul	r3, r3, r8	@ _21, _20, Xi
 @ iir_optimized.c:85: 		register int t0 = (int)C0 *(int)Xi + (1<<14);
@@ -424,19 +418,19 @@ main:
 @ iir_optimized.c:86: 		tmp_0 = ROUND_SHIFT(t0);
 	uxth	r3, r5	@ _22, t0
 	cmp	r3, #0	@ _22,
-	beq	.L21		@,
+	beq	.L20		@,
 @ iir_optimized.c:86: 		tmp_0 = ROUND_SHIFT(t0);
 	asr	r3, r5, #15	@ _23, t0,
 	orr	r3, r3, #1	@ iftmp.4_83, _23,
-	b	.L22		@
-.L21:
+	b	.L21		@
+.L20:
 @ iir_optimized.c:86: 		tmp_0 = ROUND_SHIFT(t0);
 	asr	r3, r5, #15	@ iftmp.4_83, t0,
-.L22:
+.L21:
 @ iir_optimized.c:86: 		tmp_0 = ROUND_SHIFT(t0);
-	str	r3, [fp, #-56]	@ iftmp.4_83, tmp_0
+	str	r3, [fp, #-52]	@ iftmp.4_83, tmp_0
 @ iir_optimized.c:87: 		register int t1 = (int)C1 *(int)Xi_minus_1 + (1<<14);
-	ldrsh	r3, [fp, #-36]	@ _24, C1
+	ldrsh	r3, [fp, #-32]	@ _24, C1
 @ iir_optimized.c:87: 		register int t1 = (int)C1 *(int)Xi_minus_1 + (1<<14);
 	mul	r3, r3, r7	@ _25, _24, Xi_minus_1
 @ iir_optimized.c:87: 		register int t1 = (int)C1 *(int)Xi_minus_1 + (1<<14);
@@ -444,19 +438,19 @@ main:
 @ iir_optimized.c:88: 		tmp_1 = ROUND_SHIFT(t1);
 	uxth	r3, r5	@ _26, t1
 	cmp	r3, #0	@ _26,
-	beq	.L23		@,
+	beq	.L22		@,
 @ iir_optimized.c:88: 		tmp_1 = ROUND_SHIFT(t1);
 	asr	r3, r5, #15	@ _27, t1,
 	orr	r3, r3, #1	@ iftmp.5_84, _27,
-	b	.L24		@
-.L23:
+	b	.L23		@
+.L22:
 @ iir_optimized.c:88: 		tmp_1 = ROUND_SHIFT(t1);
 	asr	r3, r5, #15	@ iftmp.5_84, t1,
-.L24:
+.L23:
 @ iir_optimized.c:88: 		tmp_1 = ROUND_SHIFT(t1);
-	str	r3, [fp, #-60]	@ iftmp.5_84, tmp_1
+	str	r3, [fp, #-56]	@ iftmp.5_84, tmp_1
 @ iir_optimized.c:89: 		register int t3 = (int)C3 *(int)Yi_minus_1 + (1<<14);
-	ldrsh	r3, [fp, #-40]	@ _28, C3
+	ldrsh	r3, [fp, #-36]	@ _28, C3
 @ iir_optimized.c:89: 		register int t3 = (int)C3 *(int)Yi_minus_1 + (1<<14);
 	mul	r3, r3, r6	@ _29, _28, Yi_minus_1
 @ iir_optimized.c:89: 		register int t3 = (int)C3 *(int)Yi_minus_1 + (1<<14);
@@ -464,26 +458,26 @@ main:
 @ iir_optimized.c:90: 		tmp_3 = ROUND_SHIFT(t3);
 	uxth	r3, r5	@ _30, t3
 	cmp	r3, #0	@ _30,
-	beq	.L25		@,
+	beq	.L24		@,
 @ iir_optimized.c:90: 		tmp_3 = ROUND_SHIFT(t3);
 	asr	r3, r5, #15	@ _31, t3,
 	orr	r3, r3, #1	@ iftmp.6_85, _31,
-	b	.L26		@
-.L25:
+	b	.L25		@
+.L24:
 @ iir_optimized.c:90: 		tmp_3 = ROUND_SHIFT(t3);
 	asr	r3, r5, #15	@ iftmp.6_85, t3,
-.L26:
+.L25:
 @ iir_optimized.c:90: 		tmp_3 = ROUND_SHIFT(t3);
-	str	r3, [fp, #-64]	@ iftmp.6_85, tmp_3
+	str	r3, [fp, #-60]	@ iftmp.6_85, tmp_3
 @ iir_optimized.c:93: 		Y[i] = (short int) SHORT_INT_CLIPPING(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
-	ldr	r2, [fp, #-56]	@ tmp233, tmp_0
-	ldr	r3, [fp, #-60]	@ tmp234, tmp_1
+	ldr	r2, [fp, #-52]	@ tmp233, tmp_0
+	ldr	r3, [fp, #-56]	@ tmp234, tmp_1
 	add	r2, r2, r3	@ _32, tmp233, tmp234
-	ldr	r3, [fp, #-48]	@ tmp235, tmp_2
+	ldr	r3, [fp, #-44]	@ tmp235, tmp_2
 	add	r2, r2, r3	@ _33, _32, tmp235
-	ldr	r3, [fp, #-64]	@ tmp236, tmp_3
+	ldr	r3, [fp, #-60]	@ tmp236, tmp_3
 	add	r2, r2, r3	@ _34, _33, tmp236
-	ldr	r3, [fp, #-52]	@ tmp237, tmp_4
+	ldr	r3, [fp, #-48]	@ tmp237, tmp_4
 	add	r3, r2, r3	@ _35, _34, tmp237
 	movw	r2, #32767	@ tmp238,
 	cmp	r3, r2	@ _35, tmp238
@@ -497,7 +491,7 @@ main:
 	add	r3, r3, r1	@ tmp241, tmp239, tmp240
 	strh	r2, [r3]	@ movhi	@ _37, Y
 @ iir_optimized.c:95: 		t0 = (int)C0 *(int)X.input[i+1] + (1<<14);
-	ldrsh	r2, [fp, #-34]	@ _42, C0
+	ldrsh	r2, [fp, #-30]	@ _42, C0
 @ iir_optimized.c:95: 		t0 = (int)C0 *(int)X.input[i+1] + (1<<14);
 	add	r1, r4, #1	@ _43, i,
 @ iir_optimized.c:95: 		t0 = (int)C0 *(int)X.input[i+1] + (1<<14);
@@ -513,19 +507,19 @@ main:
 @ iir_optimized.c:96: 		tmp_0 = ROUND_SHIFT(t0);
 	uxth	r3, r5	@ _47, t0
 	cmp	r3, #0	@ _47,
-	beq	.L27		@,
+	beq	.L26		@,
 @ iir_optimized.c:96: 		tmp_0 = ROUND_SHIFT(t0);
 	asr	r3, r5, #15	@ _48, t0,
 	orr	r3, r3, #1	@ iftmp.7_86, _48,
-	b	.L28		@
-.L27:
+	b	.L27		@
+.L26:
 @ iir_optimized.c:96: 		tmp_0 = ROUND_SHIFT(t0);
 	asr	r3, r5, #15	@ iftmp.7_86, t0,
-.L28:
+.L27:
 @ iir_optimized.c:96: 		tmp_0 = ROUND_SHIFT(t0);
-	str	r3, [fp, #-56]	@ iftmp.7_86, tmp_0
+	str	r3, [fp, #-52]	@ iftmp.7_86, tmp_0
 @ iir_optimized.c:97: 		t1 = (int)C1 *(int)Xi + (1<<14);
-	ldrsh	r3, [fp, #-36]	@ _49, C1
+	ldrsh	r3, [fp, #-32]	@ _49, C1
 @ iir_optimized.c:97: 		t1 = (int)C1 *(int)Xi + (1<<14);
 	mul	r3, r3, r8	@ _50, _49, Xi
 @ iir_optimized.c:97: 		t1 = (int)C1 *(int)Xi + (1<<14);
@@ -533,19 +527,19 @@ main:
 @ iir_optimized.c:98: 		tmp_1 = ROUND_SHIFT(t1);
 	uxth	r3, r5	@ _51, t1
 	cmp	r3, #0	@ _51,
-	beq	.L29		@,
+	beq	.L28		@,
 @ iir_optimized.c:98: 		tmp_1 = ROUND_SHIFT(t1);
 	asr	r3, r5, #15	@ _52, t1,
 	orr	r3, r3, #1	@ iftmp.8_87, _52,
-	b	.L30		@
-.L29:
+	b	.L29		@
+.L28:
 @ iir_optimized.c:98: 		tmp_1 = ROUND_SHIFT(t1);
 	asr	r3, r5, #15	@ iftmp.8_87, t1,
-.L30:
+.L29:
 @ iir_optimized.c:98: 		tmp_1 = ROUND_SHIFT(t1);
-	str	r3, [fp, #-60]	@ iftmp.8_87, tmp_1
+	str	r3, [fp, #-56]	@ iftmp.8_87, tmp_1
 @ iir_optimized.c:99: 		t2 = (int)C2 *(int)Xi_minus_1 + (1<<14);
-	ldrsh	r3, [fp, #-38]	@ _53, C2
+	ldrsh	r3, [fp, #-34]	@ _53, C2
 @ iir_optimized.c:99: 		t2 = (int)C2 *(int)Xi_minus_1 + (1<<14);
 	mul	r3, r3, r7	@ _54, _53, Xi_minus_1
 @ iir_optimized.c:99: 		t2 = (int)C2 *(int)Xi_minus_1 + (1<<14);
@@ -553,19 +547,19 @@ main:
 @ iir_optimized.c:100: 		tmp_2 = ROUND_SHIFT(t2);
 	uxth	r3, r5	@ _55, t2
 	cmp	r3, #0	@ _55,
-	beq	.L31		@,
+	beq	.L30		@,
 @ iir_optimized.c:100: 		tmp_2 = ROUND_SHIFT(t2);
 	asr	r3, r5, #15	@ _56, t2,
 	orr	r3, r3, #1	@ iftmp.9_88, _56,
-	b	.L32		@
-.L31:
+	b	.L31		@
+.L30:
 @ iir_optimized.c:100: 		tmp_2 = ROUND_SHIFT(t2);
 	asr	r3, r5, #15	@ iftmp.9_88, t2,
-.L32:
+.L31:
 @ iir_optimized.c:100: 		tmp_2 = ROUND_SHIFT(t2);
-	str	r3, [fp, #-48]	@ iftmp.9_88, tmp_2
+	str	r3, [fp, #-44]	@ iftmp.9_88, tmp_2
 @ iir_optimized.c:101: 		t3 = (int)C3 *(int)Y[i] + (1<<14);
-	ldrsh	r2, [fp, #-40]	@ _57, C3
+	ldrsh	r2, [fp, #-36]	@ _57, C3
 @ iir_optimized.c:101: 		t3 = (int)C3 *(int)Y[i] + (1<<14);
 	movw	r3, #:lower16:Y	@ tmp250,
 	movt	r3, #:upper16:Y	@ tmp250,
@@ -579,19 +573,19 @@ main:
 @ iir_optimized.c:102: 		tmp_3 = ROUND_SHIFT(t3);
 	uxth	r3, r5	@ _61, t3
 	cmp	r3, #0	@ _61,
-	beq	.L33		@,
+	beq	.L32		@,
 @ iir_optimized.c:102: 		tmp_3 = ROUND_SHIFT(t3);
 	asr	r3, r5, #15	@ _62, t3,
 	orr	r3, r3, #1	@ iftmp.10_89, _62,
-	b	.L34		@
-.L33:
+	b	.L33		@
+.L32:
 @ iir_optimized.c:102: 		tmp_3 = ROUND_SHIFT(t3);
 	asr	r3, r5, #15	@ iftmp.10_89, t3,
-.L34:
+.L33:
 @ iir_optimized.c:102: 		tmp_3 = ROUND_SHIFT(t3);
-	str	r3, [fp, #-64]	@ iftmp.10_89, tmp_3
+	str	r3, [fp, #-60]	@ iftmp.10_89, tmp_3
 @ iir_optimized.c:103: 		t4 = (int)C4 *(int)Yi_minus_1 + (1<<14);
-	ldrsh	r3, [fp, #-42]	@ _63, C4
+	ldrsh	r3, [fp, #-38]	@ _63, C4
 @ iir_optimized.c:103: 		t4 = (int)C4 *(int)Yi_minus_1 + (1<<14);
 	mul	r3, r3, r6	@ _64, _63, Yi_minus_1
 @ iir_optimized.c:103: 		t4 = (int)C4 *(int)Yi_minus_1 + (1<<14);
@@ -599,26 +593,26 @@ main:
 @ iir_optimized.c:104: 		tmp_4 = ROUND_SHIFT(t4);
 	uxth	r3, r5	@ _65, t4
 	cmp	r3, #0	@ _65,
-	beq	.L35		@,
+	beq	.L34		@,
 @ iir_optimized.c:104: 		tmp_4 = ROUND_SHIFT(t4);
 	asr	r3, r5, #15	@ _66, t4,
 	orr	r3, r3, #1	@ iftmp.11_90, _66,
-	b	.L36		@
-.L35:
+	b	.L35		@
+.L34:
 @ iir_optimized.c:104: 		tmp_4 = ROUND_SHIFT(t4);
 	asr	r3, r5, #15	@ iftmp.11_90, t4,
-.L36:
+.L35:
 @ iir_optimized.c:104: 		tmp_4 = ROUND_SHIFT(t4);
-	str	r3, [fp, #-52]	@ iftmp.11_90, tmp_4
+	str	r3, [fp, #-48]	@ iftmp.11_90, tmp_4
 @ iir_optimized.c:110: 		Y[i+1] = (short int) SHORT_INT_CLIPPING(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
-	ldr	r2, [fp, #-56]	@ tmp253, tmp_0
-	ldr	r3, [fp, #-60]	@ tmp254, tmp_1
+	ldr	r2, [fp, #-52]	@ tmp253, tmp_0
+	ldr	r3, [fp, #-56]	@ tmp254, tmp_1
 	add	r2, r2, r3	@ _67, tmp253, tmp254
-	ldr	r3, [fp, #-48]	@ tmp255, tmp_2
+	ldr	r3, [fp, #-44]	@ tmp255, tmp_2
 	add	r2, r2, r3	@ _68, _67, tmp255
-	ldr	r3, [fp, #-64]	@ tmp256, tmp_3
+	ldr	r3, [fp, #-60]	@ tmp256, tmp_3
 	add	r2, r2, r3	@ _69, _68, tmp256
-	ldr	r3, [fp, #-52]	@ tmp257, tmp_4
+	ldr	r3, [fp, #-48]	@ tmp257, tmp_4
 	add	r3, r2, r3	@ _70, _69, tmp257
 	movw	r2, #32767	@ tmp258,
 	cmp	r3, r2	@ _70, tmp258
@@ -633,24 +627,21 @@ main:
 	lsl	r1, r1, #1	@ tmp260, _72,
 	add	r3, r3, r1	@ tmp261, tmp259, tmp260
 	strh	r2, [r3]	@ movhi	@ _73, Y
+@ iir_optimized.c:116: 		print(i);
+	mov	r0, r4	@, i
+	bl	print		@
+@ iir_optimized.c:117: 		print(i+1);
+	add	r3, r4, #1	@ _78, i,
+	mov	r0, r3	@, _78
+	bl	print		@
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
 	add	r4, r4, #2	@ i, i,
-.L16:
-@ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
-	and	r3, r4, #128	@ _78, i,
-@ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
-	cmp	r3, #0	@ _78,
-	beq	.L37		@,
-@ iir_optimized.c:56: 	for(run = 0; run<10000; run++){
-	ldr	r3, [fp, #-32]	@ tmp268, run
-	add	r3, r3, #1	@ tmp267, tmp268,
-	str	r3, [fp, #-32]	@ tmp267, run
 .L15:
-@ iir_optimized.c:56: 	for(run = 0; run<10000; run++){
-	ldr	r3, [fp, #-32]	@ tmp269, run
-	movw	r2, #9999	@ tmp270,
-	cmp	r3, r2	@ tmp269, tmp270
-	ble	.L38		@,
+@ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
+	and	r3, r4, #128	@ _79, i,
+@ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
+	cmp	r3, #0	@ _79,
+	beq	.L36		@,
 @ iir_optimized.c:121: }
 	nop	
 	sub	sp, fp, #24	@,,
