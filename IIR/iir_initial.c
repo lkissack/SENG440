@@ -25,11 +25,15 @@ short int short_int_clipping(int a){
 		tmp = 32767;
 	if(tmp <= -32767)
 		tmp = -32767;
-	//implement von nueman rounding?
-	printf("tmp: 0x%hX", tmp);
-	if(tmp&0x7FFF)
-		tmp|=0x8000;
+	
 	return (short int) tmp;
+}
+
+int round_shift(int a){
+	printf("a: 0x%hX", a);
+	if(a&0x7FFF)
+		a|=0x8000;
+	return a>>15;
 }
 
 void main(){
@@ -47,11 +51,17 @@ void main(){
 	filter_init(X, Y);
 	
 	for (i =2; i< 128; i++){
-		tmp_0 = ((int)C0 *(int)X[i] + (1<<14))>>15;
+		/*tmp_0 = ((int)C0 *(int)X[i] + (1<<14))>>15;
 		tmp_1 = ((int)C1 *(int)X[i-1] + (1<<14))>>15;
 		tmp_2 = ((int)C2 *(int)X[i-2] + (1<<14))>>15;
 		tmp_3 = ((int)C3 *(int)Y[i-1] + (1<<14))>>15;
-		tmp_4 = ((int)C4 *(int)Y[i-2] + (1<<14))>>15;
+		tmp_4 = ((int)C4 *(int)Y[i-2] + (1<<14))>>15;*/
+		
+		tmp_0 = round_shift((int)C0 *(int)X[i] + (1<<14));
+		tmp_1 = round_shift((int)C1 *(int)X[i-1] + (1<<14));
+		tmp_2 = round_shift((int)C2 *(int)X[i-2] + (1<<14));
+		tmp_3 = round_shift((int)C3 *(int)Y[i-1] + (1<<14));
+		tmp_4 = round_shift((int)C4 *(int)Y[i-2] + (1<<14));
 		
 		Y[i] = short_int_clipping( tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 		print(i);
