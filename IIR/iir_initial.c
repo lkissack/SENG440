@@ -66,5 +66,6 @@ void main(){
 		Y[i] = short_int_clipping( tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 		print(i);
 	}
+	return 0;
 	
 }
