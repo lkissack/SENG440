@@ -36,7 +36,7 @@ int round_shift(int a){
 	return a>>15;
 }
 
-void main(){
+int main(){
 
 	const short int C0 = 0x10C8;
 	const short int C1 = 0x2190;
