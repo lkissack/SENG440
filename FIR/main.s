@@ -84,7 +84,7 @@ FIR:
 	push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}	@
 	sub	sp, sp, #12	@,,
 	mov	r5, r0	@ filter_coeffs, filter_coeffs
-	mov	r9, r2	@ output, output
+	mov	r10, r2	@ output, output
 	mov	r4, r3	@ length, length
 @ main.c:42:  memcpy( &insamp[FILT_LENGTH - 1], input, length * sizeof(int16_t));
 	lsl	r6, r3, #1	@ _2, length,
@@ -95,79 +95,107 @@ FIR:
 @ main.c:45:     for (n = 0; n<length; n++)
 	cmp	r4, #0	@ length,
 	ble	.L4		@,
-	sub	r9, r9, #2	@ ivtmp.26, output,
-	ldr	r10, .L10+4	@ ivtmp.28,
-	add	fp, r9, r6	@ _102, ivtmp.26, _2
-@ main.c:39:     register int32_t temp2 = 0;
-	mov	ip, #0	@ temp2,
-@ main.c:38:     register int32_t temp1 = 0;
-	mov	r4, ip	@ temp1, temp2
-	add	r8, r5, #1008	@ _88, filter_coeffs,
+	ldr	r2, .L10+4	@ ivtmp.43,
+	sub	r10, r10, #2	@ ivtmp.45, output,
+	add	fp, r10, r6	@ _143, ivtmp.45, _2
+	add	r8, r5, #1012	@ _128, filter_coeffs,
 .L6:
-	add	r3, r5, #8	@ ivtmp.15, filter_coeffs,
-	mov	r2, r10	@ ivtmp.17, ivtmp.28
+@ main.c:52: 	temp1 = (int32_t)(*h++)*(int32_t)(*x--);
+	ldrsh	r3, [r5]	@ *filter_coeffs_62(D), *filter_coeffs_62(D)
+@ main.c:52: 	temp1 = (int32_t)(*h++)*(int32_t)(*x--);
+	mov	ip, r2	@ ivtmp.43, ivtmp.43
+	ldrsh	r1, [ip, #2]!	@ MEM[base: _145, offset: 2B], MEM[base: _145, offset: 2B]
+@ main.c:52: 	temp1 = (int32_t)(*h++)*(int32_t)(*x--);
+	mul	r1, r1, r3	@ temp1, MEM[base: _145, offset: 2B], *filter_coeffs_62(D)
+@ main.c:53: 	temp2 = (int32_t)(*h++)*(int32_t)(*x--);
+	ldrsh	r3, [r5, #2]	@ MEM[(int16_t *)filter_coeffs_62(D) + 2B], MEM[(int16_t *)filter_coeffs_62(D) + 2B]
+@ main.c:53: 	temp2 = (int32_t)(*h++)*(int32_t)(*x--);
+	ldrsh	r0, [r2], #-18	@ MEM[base: _145, offset: 0B], MEM[base: _145, offset: 0B]
+@ main.c:53: 	temp2 = (int32_t)(*h++)*(int32_t)(*x--);
+	mul	r0, r0, r3	@ temp2, MEM[base: _145, offset: 0B], MEM[(int16_t *)filter_coeffs_62(D) + 2B]
+	add	r3, r5, #20	@ ivtmp.27, filter_coeffs,
 @ main.c:50:     acc = (1 << 14);// preload rounding constant
-	mov	r1, #16384	@ acc,
+	mov	lr, #16384	@ acc,
 .L5:
-@ main.c:60:             acc = acc + temp1;
-	add	r1, r1, r4	@ acc, acc, temp1
-@ main.c:62:             temp1 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	ldrsh	r0, [r3, #-8]	@ MEM[base: _66, offset: 4294967288B], MEM[base: _66, offset: 4294967288B]
-@ main.c:62:             temp1 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	ldrsh	r6, [r2, #8]	@ MEM[base: _62, offset: 8B], MEM[base: _62, offset: 8B]
-@ main.c:67:             acc = acc + temp2;
-	add	r1, r1, ip	@ acc, acc, temp2
-@ main.c:69:             temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	ldrsh	ip, [r3, #-6]	@ MEM[base: _66, offset: 4294967290B], MEM[base: _66, offset: 4294967290B]
-@ main.c:69:             temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	ldrsh	lr, [r2, #6]	@ MEM[base: _62, offset: 6B], MEM[base: _62, offset: 6B]
-@ main.c:75:             temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r7, [r3, #-4]	@ MEM[base: _66, offset: 4294967292B], MEM[base: _66, offset: 4294967292B]
-@ main.c:75:             temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r4, [r2, #4]	@ MEM[base: _62, offset: 4B], MEM[base: _62, offset: 4B]
-@ main.c:75:             temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-	mul	r4, r4, r7	@ tmp172, MEM[base: _62, offset: 4B], MEM[base: _66, offset: 4294967292B]
-@ main.c:75:             temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-	mla	r4, r6, r0, r4	@ temp1, MEM[base: _62, offset: 8B], MEM[base: _66, offset: 4294967288B], tmp172
-@ main.c:80:             temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	ldrsh	r6, [r3, #-2]	@ MEM[base: _66, offset: 4294967294B], MEM[base: _66, offset: 4294967294B]
-@ main.c:80:             temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	ldrsh	r0, [r2, #2]	@ MEM[base: _62, offset: 2B], MEM[base: _62, offset: 2B]
-@ main.c:80:             temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	mul	r0, r0, r6	@ tmp175, MEM[base: _62, offset: 2B], MEM[base: _66, offset: 4294967294B]
-@ main.c:80:             temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	mla	ip, lr, ip, r0	@ temp2, MEM[base: _62, offset: 6B], MEM[base: _66, offset: 4294967290B], tmp175
-	add	r3, r3, #8	@ ivtmp.15, ivtmp.15,
-	sub	r2, r2, #8	@ ivtmp.17, ivtmp.17,
-@ main.c:58:         for (k = 0; k < ((FILT_LENGTH)>>2); k++)
-	cmp	r3, r8	@ ivtmp.15, _88
+@ main.c:60:             acc += temp1;
+	add	r1, lr, r1	@ acc, acc, temp1
+@ main.c:61:             acc += temp2;
+	add	lr, r1, r0	@ acc, acc, temp2
+@ main.c:63:             temp1 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+	ldrsh	r6, [r3, #-16]	@ MEM[base: _94, offset: 4294967280B], MEM[base: _94, offset: 4294967280B]
+@ main.c:63:             temp1 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+	ldrsh	r4, [r2, #16]	@ MEM[base: _126, offset: 16B], MEM[base: _126, offset: 16B]
+@ main.c:68:             temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+	ldrsh	r9, [r3, #-14]	@ MEM[base: _94, offset: 4294967282B], MEM[base: _94, offset: 4294967282B]
+@ main.c:68:             temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+	ldrsh	r1, [r2, #14]	@ MEM[base: _126, offset: 14B], MEM[base: _126, offset: 14B]
+@ main.c:74:            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+	ldrsh	r0, [r3, #-12]	@ MEM[base: _94, offset: 4294967284B], MEM[base: _94, offset: 4294967284B]
+@ main.c:74:            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+	ldrsh	r7, [r2, #12]	@ MEM[base: _126, offset: 12B], MEM[base: _126, offset: 12B]
+@ main.c:74:            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+	mul	r7, r7, r0	@ tmp209, MEM[base: _126, offset: 12B], MEM[base: _94, offset: 4294967284B]
+@ main.c:74:            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+	mla	r4, r4, r6, r7	@ temp1, MEM[base: _126, offset: 16B], MEM[base: _94, offset: 4294967280B], tmp209
+@ main.c:79:            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+	ldrsh	r6, [r3, #-10]	@ MEM[base: _94, offset: 4294967286B], MEM[base: _94, offset: 4294967286B]
+@ main.c:79:            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+	ldrsh	r0, [r2, #10]	@ MEM[base: _126, offset: 10B], MEM[base: _126, offset: 10B]
+@ main.c:79:            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+	mul	r0, r0, r6	@ tmp212, MEM[base: _126, offset: 10B], MEM[base: _94, offset: 4294967286B]
+@ main.c:79:            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+	mla	r0, r1, r9, r0	@ temp2, MEM[base: _126, offset: 14B], MEM[base: _94, offset: 4294967282B], tmp212
+@ main.c:83:            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+	ldrsh	r1, [r3, #-8]	@ MEM[base: _94, offset: 4294967288B], MEM[base: _94, offset: 4294967288B]
+@ main.c:83:            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+	ldrsh	r6, [r2, #8]	@ MEM[base: _126, offset: 8B], MEM[base: _126, offset: 8B]
+@ main.c:83:            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+	mla	r6, r6, r1, r4	@ temp1, MEM[base: _126, offset: 8B], MEM[base: _94, offset: 4294967288B], temp1
+@ main.c:88:            temp2 += (int32_t)(*h++)*(int32_t)(*x--);
+	ldrsh	r4, [r3, #-6]	@ MEM[base: _94, offset: 4294967290B], MEM[base: _94, offset: 4294967290B]
+@ main.c:88:            temp2 += (int32_t)(*h++)*(int32_t)(*x--);
+	ldrsh	r1, [r2, #6]	@ MEM[base: _126, offset: 6B], MEM[base: _126, offset: 6B]
+@ main.c:88:            temp2 += (int32_t)(*h++)*(int32_t)(*x--);
+	mla	r4, r1, r4, r0	@ temp2, MEM[base: _126, offset: 6B], MEM[base: _94, offset: 4294967290B], temp2
+@ main.c:89:             temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+	ldrsh	r1, [r3, #-4]	@ MEM[base: _94, offset: 4294967292B], MEM[base: _94, offset: 4294967292B]
+@ main.c:89:             temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+	ldrsh	r0, [r2, #4]	@ MEM[base: _126, offset: 4B], MEM[base: _126, offset: 4B]
+@ main.c:89:             temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+	mla	r1, r0, r1, r6	@ temp1, MEM[base: _126, offset: 4B], MEM[base: _94, offset: 4294967292B], temp1
+@ main.c:94:            temp2 += (int32_t)(*h++)*(int32_t)(*x--);
+	ldrsh	r0, [r3, #-2]	@ MEM[base: _94, offset: 4294967294B], MEM[base: _94, offset: 4294967294B]
+@ main.c:94:            temp2 += (int32_t)(*h++)*(int32_t)(*x--);
+	ldrsh	r6, [r2, #2]	@ MEM[base: _126, offset: 2B], MEM[base: _126, offset: 2B]
+@ main.c:94:            temp2 += (int32_t)(*h++)*(int32_t)(*x--);
+	mla	r0, r6, r0, r4	@ temp2, MEM[base: _126, offset: 2B], MEM[base: _94, offset: 4294967294B], temp2
+	add	r3, r3, #16	@ ivtmp.27, ivtmp.27,
+	sub	r2, r2, #16	@ ivtmp.29, ivtmp.29,
+@ main.c:58:         for (k = 0; k < ((FILT_LENGTH)>>3); k++)
+	cmp	r3, r8	@ ivtmp.27, _128
 	bne	.L5		@,
-@ main.c:87:         acc=acc+temp1;
-	add	r3, r1, r4	@ acc, acc, temp1
-@ main.c:88:         temp2 += (1<<4); //rounding 
-	add	ip, ip, #16	@ temp2, temp2,
-@ main.c:89:         temp2 >>= 5;     //shift
-	asr	ip, ip, #5	@ temp2, temp2,
-@ main.c:90:         acc=acc+temp2;
-	add	r3, r3, ip	@ acc, acc, temp2
-@ main.c:99:         output[n] = (int16_t)(acc>>15);//convert to 16 bit
-	asr	r3, r3, #15	@ tmp177, acc,
-@ main.c:99:         output[n] = (int16_t)(acc>>15);//convert to 16 bit
-	strh	r3, [r9, #2]!	@ movhi	@ tmp177, MEM[base: _97, offset: 0B]
-	add	r10, r10, #2	@ ivtmp.28, ivtmp.28,
+@ main.c:98:         acc += temp1;
+	add	r3, lr, r1	@ acc, acc, temp1
+@ main.c:99:         acc += temp2;
+	add	r3, r0, r3	@ acc, temp2, acc
+@ main.c:108:         output[n] = (int16_t)(acc>>15);//convert to 16 bit
+	asr	r3, r3, #15	@ tmp226, acc,
+@ main.c:108:         output[n] = (int16_t)(acc>>15);//convert to 16 bit
+	strh	r3, [r10, #2]!	@ movhi	@ tmp226, MEM[base: _138, offset: 0B]
+	mov	r2, ip	@ ivtmp.43, ivtmp.43
 @ main.c:45:     for (n = 0; n<length; n++)
-	cmp	r9, fp	@ ivtmp.26, _102
+	cmp	r10, fp	@ ivtmp.45, _143
 	bne	.L6		@,
 .L4:
-@ main.c:103:  memmove(&insamp[0], &insamp[length], (FILT_LENGTH - 1) * sizeof(int16_t) );
-	movw	r0, #:lower16:insamp	@ tmp179,
-	movt	r0, #:upper16:insamp	@ tmp179,
-@ main.c:103:  memmove(&insamp[0], &insamp[length], (FILT_LENGTH - 1) * sizeof(int16_t) );
+@ main.c:112:  memmove(&insamp[0], &insamp[length], (FILT_LENGTH - 1) * sizeof(int16_t) );
+	movw	r0, #:lower16:insamp	@ tmp228,
+	movt	r0, #:upper16:insamp	@ tmp228,
+@ main.c:112:  memmove(&insamp[0], &insamp[length], (FILT_LENGTH - 1) * sizeof(int16_t) );
 	movw	r2, #998	@,
 	ldr	r3, [sp, #4]	@ _2, %sfp
-	add	r1, r0, r3	@, tmp179, _2
+	add	r1, r0, r3	@, tmp228, _2
 	bl	memmove		@
-@ main.c:104: }
+@ main.c:113: }
 	add	sp, sp, #12	@,,
 	@ sp needed	@
 	pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}	@
@@ -175,7 +203,7 @@ FIR:
 	.align	2
 .L10:
 	.word	insamp+998
-	.word	insamp+990
+	.word	insamp+996
 	.size	FIR, .-FIR
 	.align	2
 	.global	main
@@ -188,83 +216,83 @@ main:
 	@ frame_needed = 0, uses_anonymous_args = 0
 	push	{r4, r5, r6, r7, r8, lr}	@
 	sub	sp, sp, #3200	@,,
-@ main.c:115:     in_fid = fopen( "noisy.wav", "rb" );
+@ main.c:124:     in_fid = fopen( "noisy.wav", "rb" );
 	movw	r1, #:lower16:.LC0	@,
 	movt	r1, #:upper16:.LC0	@,
 	movw	r0, #:lower16:.LC1	@,
 	movt	r0, #:upper16:.LC1	@,
 	bl	fopen		@
-@ main.c:116:     if ( in_fid == 0 ) {
+@ main.c:125:     if ( in_fid == 0 ) {
 	subs	r8, r0, #0	@ in_fid,
 	beq	.L18		@,
-@ main.c:122:     out_fid = fopen( "outputFIR.wav", "wb" );
+@ main.c:131:     out_fid = fopen( "outputFIR.wav", "wb" );
 	movw	r1, #:lower16:.LC3	@,
 	movt	r1, #:upper16:.LC3	@,
 	movw	r0, #:lower16:.LC4	@,
 	movt	r0, #:upper16:.LC4	@,
 	bl	fopen		@
-@ main.c:123:     if ( out_fid == 0 ) {
+@ main.c:132:     if ( out_fid == 0 ) {
 	subs	r7, r0, #0	@ out_fid,
 	beq	.L19		@,
-@ main.c:129:     FIR_Init();
+@ main.c:138:     FIR_Init();
 	bl	FIR_Init		@
-@ main.c:134:         size = fread( input, sizeof(int16_t), SAMPLES, in_fid );
+@ main.c:143:         size = fread( input, sizeof(int16_t), SAMPLES, in_fid );
 	mov	r5, #2	@ tmp128,
-@ main.c:136:         FIR( coeffs, input, output, size);
+@ main.c:145:         FIR( coeffs, input, output, size);
 	movw	r6, #:lower16:.LANCHOR0	@ tmp124,
 	movt	r6, #:upper16:.LANCHOR0	@ tmp124,
 .L15:
-@ main.c:134:         size = fread( input, sizeof(int16_t), SAMPLES, in_fid );
+@ main.c:143:         size = fread( input, sizeof(int16_t), SAMPLES, in_fid );
 	mov	r3, r8	@, in_fid
 	mov	r2, #800	@,
 	mov	r1, r5	@, tmp128
 	add	r0, sp, #1600	@ tmp129,,
 	bl	fread		@
 	mov	r4, r0	@ _1,
-@ main.c:136:         FIR( coeffs, input, output, size);
+@ main.c:145:         FIR( coeffs, input, output, size);
 	mov	r3, r0	@, _1
 	mov	r2, sp	@,
 	add	r1, sp, #1600	@ tmp130,,
 	mov	r0, r6	@, tmp124
 	bl	FIR		@
-@ main.c:138:         fwrite( output, sizeof(int16_t), size, out_fid );
+@ main.c:147:         fwrite( output, sizeof(int16_t), size, out_fid );
 	mov	r3, r7	@, out_fid
 	mov	r2, r4	@, _1
 	mov	r1, r5	@, tmp128
 	mov	r0, sp	@,
 	bl	fwrite		@
-@ main.c:139:     } while ( size != 0 );
+@ main.c:148:     } while ( size != 0 );
 	cmp	r4, #0	@ _1,
 	bne	.L15		@,
-@ main.c:141:     fclose( in_fid );
+@ main.c:150:     fclose( in_fid );
 	mov	r0, r8	@, in_fid
 	bl	fclose		@
-@ main.c:142:     fclose( out_fid );
+@ main.c:151:     fclose( out_fid );
 	mov	r0, r7	@, out_fid
 	bl	fclose		@
-@ main.c:144:     printf("Filtering Complete \n");
+@ main.c:153:     printf("Filtering Complete \n");
 	movw	r0, #:lower16:.LC6	@,
 	movt	r0, #:upper16:.LC6	@,
 	bl	puts		@
-@ main.c:149: }
+@ main.c:158: }
 	mov	r0, #0	@,
 	add	sp, sp, #3200	@,,
 	@ sp needed	@
 	pop	{r4, r5, r6, r7, r8, pc}	@
 .L18:
-@ main.c:117:         printf("couldn't open input file");
+@ main.c:126:         printf("couldn't open input file");
 	movw	r0, #:lower16:.LC2	@,
 	movt	r0, #:upper16:.LC2	@,
 	bl	printf		@
-@ main.c:118:         exit(EXIT_FAILURE);
+@ main.c:127:         exit(EXIT_FAILURE);
 	mov	r0, #1	@,
 	bl	exit		@
 .L19:
-@ main.c:124:         printf("couldn't open output file");
+@ main.c:133:         printf("couldn't open output file");
 	movw	r0, #:lower16:.LC5	@,
 	movt	r0, #:upper16:.LC5	@,
 	bl	printf		@
-@ main.c:125:         exit(EXIT_FAILURE);
+@ main.c:134:         exit(EXIT_FAILURE);
 	mov	r0, #1	@,
 	bl	exit		@
 	.size	main, .-main
