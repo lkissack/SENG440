@@ -49,6 +49,8 @@ void print(int i){
 }
 
 void main(){
+	int run;
+	for(run = 0; run<1000; run++){
 
 	//printf("Hello World\n");
 	const short int C0 = 0x10C8;
@@ -99,5 +101,6 @@ void main(){
 		print(i);
 		print(i+1);
 		
+	}
 	}
 }
