@@ -86,9 +86,8 @@ void main(){
 		//Currently has scale factor 2^15, but should switch to be 2^14
 		//Need to shift y inputs of filter if doing so
 		
-	}
-	printf("Outputting filter results\n");
-	for(i = 0; i<128;i++){
 		print(i);
+		print(i+1);
+		
 	}
 }
