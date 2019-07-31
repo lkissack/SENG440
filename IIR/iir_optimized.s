@@ -322,6 +322,7 @@ main:
 	bl	filter_init_better		@
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
 	mov	r4, #2	@ i,
+	mov	r3, #1	@prevent extra comp later
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
 	b	.L15		@
 .L36:
@@ -472,13 +473,13 @@ main:
 @ iir_optimized.c:93: 		Y[i] = (short int) SHORT_INT_CLIPPING(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 	ldr	r2, [fp, #-52]	@ tmp233, tmp_0
 	ldr	r3, [fp, #-56]	@ tmp234, tmp_1
-	qadd	r2, r2, r3	@ _32, tmp233, tmp234
+	add	r2, r2, r3	@ _32, tmp233, tmp234
 	ldr	r3, [fp, #-44]	@ tmp235, tmp_2
-	qadd	r2, r2, r3	@ _33, _32, tmp235
+	add	r2, r2, r3	@ _33, _32, tmp235
 	ldr	r3, [fp, #-60]	@ tmp236, tmp_3
-	qadd	r2, r2, r3	@ _34, _33, tmp236
+	add	r2, r2, r3	@ _34, _33, tmp236
 	ldr	r3, [fp, #-48]	@ tmp237, tmp_4
-	qadd	r3, r2, r3	@ _35, _34, tmp237
+	add	r3, r2, r3	@ _35, _34, tmp237
 	movw	r2, #32767	@ tmp238,
 	cmp	r3, r2	@ _35, tmp238
 	movlt	r3, r3	@ _36, _35
@@ -607,13 +608,13 @@ main:
 @ iir_optimized.c:110: 		Y[i+1] = (short int) SHORT_INT_CLIPPING(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 	ldr	r2, [fp, #-52]	@ tmp253, tmp_0
 	ldr	r3, [fp, #-56]	@ tmp254, tmp_1
-	qadd	r2, r2, r3	@ _67, tmp253, tmp254
+	add	r2, r2, r3	@ _67, tmp253, tmp254
 	ldr	r3, [fp, #-44]	@ tmp255, tmp_2
-	qadd	r2, r2, r3	@ _68, _67, tmp255
+	add	r2, r2, r3	@ _68, _67, tmp255
 	ldr	r3, [fp, #-60]	@ tmp256, tmp_3
-	qadd	r2, r2, r3	@ _69, _68, tmp256
+	add	r2, r2, r3	@ _69, _68, tmp256
 	ldr	r3, [fp, #-48]	@ tmp257, tmp_4
-	qadd	r3, r2, r3	@ _70, _69, tmp257
+	add	r3, r2, r3	@ _70, _69, tmp257
 	movw	r2, #32767	@ tmp258,
 	cmp	r3, r2	@ _70, tmp258
 	movlt	r3, r3	@ _71, _70
@@ -640,8 +641,8 @@ main:
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
 	and	r3, r4, #128	@ _79, i,
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
-	cmp	r3, #0	@ _79,
-	beq	.L36		@,
+@	cmp	r3, #0	@ _79,
+	bne	.L36		@,
 @ iir_optimized.c:121: }
 	nop	
 	sub	sp, fp, #24	@,,
