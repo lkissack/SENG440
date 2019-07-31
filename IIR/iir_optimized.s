@@ -359,7 +359,7 @@ main:
 	ldrsh	r3, [r3]	@ _6, X.input
 	mul	r3, r3, r2	@ _8, _7, _4
 	add	r3, r3, #16384	@ _9, _8,
-	ubfx	r3, r3, #0, #15	@ _10, _9,,
+	uxth	r3, r3	@ _10, _9
 	cmp	r3, #0	@ _10,
 	beq	.L17		@,
 @ iir_optimized.c:76: 		tmp_2 = ROUND_SHIFT((int)C2 *(int)X.input[i-2] + (1<<14));
@@ -410,7 +410,7 @@ main:
 	ldrsh	r3, [r3]	@ _28, Y
 	mul	r3, r3, r2	@ _30, _29, _26
 	add	r3, r3, #16384	@ _31, _30,
-	ubfx	r3, r3, #0, #15	@ _32, _31,,
+	uxth	r3, r3	@ _32, _31
 	cmp	r3, #0	@ _32,
 	beq	.L19		@,
 @ iir_optimized.c:79: 		tmp_4 = ROUND_SHIFT((int)C4 *(int)Y[i-2] + (1<<14));
@@ -445,7 +445,7 @@ main:
 	ldrsh	r3, [fp, #-26]	@ _46, C0
 	mul	r3, r3, r7	@ _47, _46, Xi
 	add	r3, r3, #16384	@ _48, _47,
-	ubfx	r3, r3, #0, #15	@ _49, _48,,
+	uxth	r3, r3	@ _49, _48
 	cmp	r3, #0	@ _49,
 	beq	.L21		@,
 @ iir_optimized.c:83: 		tmp_0 = ROUND_SHIFT((int)C0 *(int)Xi + (1<<14));
@@ -468,7 +468,7 @@ main:
 	ldrsh	r3, [fp, #-28]	@ _57, C1
 	mul	r3, r3, r6	@ _58, _57, Xi_minus_1
 	add	r3, r3, #16384	@ _59, _58,
-	ubfx	r3, r3, #0, #15	@ _60, _59,,
+	uxth	r3, r3	@ _60, _59
 	cmp	r3, #0	@ _60,
 	beq	.L23		@,
 @ iir_optimized.c:84: 		tmp_1 = ROUND_SHIFT((int)C1 *(int)Xi_minus_1 + (1<<14));
@@ -491,7 +491,7 @@ main:
 	ldrsh	r3, [fp, #-32]	@ _68, C3
 	mul	r3, r3, r5	@ _69, _68, Yi_minus_1
 	add	r3, r3, #16384	@ _70, _69,
-	ubfx	r3, r3, #0, #15	@ _71, _70,,
+	uxth	r3, r3	@ _71, _70
 	cmp	r3, #0	@ _71,
 	beq	.L25		@,
 @ iir_optimized.c:85: 		tmp_3 = ROUND_SHIFT((int)C3 *(int)Yi_minus_1 + (1<<14));
@@ -541,7 +541,7 @@ main:
 	ldrsh	r3, [r3]	@ _91, X.input
 	mul	r3, r3, r2	@ _93, _92, _89
 	add	r3, r3, #16384	@ _94, _93,
-	ubfx	r3, r3, #0, #15	@ _95, _94,,
+	uxth	r3, r3	@ _95, _94
 	cmp	r3, #0	@ _95,
 	beq	.L27		@,
 @ iir_optimized.c:90: 		tmp_0 = ROUND_SHIFT((int)C0 *(int)X.input[i+1] + (1<<14));
@@ -576,7 +576,7 @@ main:
 	ldrsh	r3, [fp, #-28]	@ _109, C1
 	mul	r3, r3, r7	@ _110, _109, Xi
 	add	r3, r3, #16384	@ _111, _110,
-	ubfx	r3, r3, #0, #15	@ _112, _111,,
+	uxth	r3, r3	@ _112, _111
 	cmp	r3, #0	@ _112,
 	beq	.L29		@,
 @ iir_optimized.c:91: 		tmp_1 = ROUND_SHIFT((int)C1 *(int)Xi + (1<<14));
@@ -599,7 +599,7 @@ main:
 	ldrsh	r3, [fp, #-30]	@ _120, C2
 	mul	r3, r3, r6	@ _121, _120, Xi_minus_1
 	add	r3, r3, #16384	@ _122, _121,
-	ubfx	r3, r3, #0, #15	@ _123, _122,,
+	uxth	r3, r3	@ _123, _122
 	cmp	r3, #0	@ _123,
 	beq	.L31		@,
 @ iir_optimized.c:92: 		tmp_2 = ROUND_SHIFT((int)C2 *(int)Xi_minus_1 + (1<<14));
@@ -627,7 +627,7 @@ main:
 	ldrsh	r3, [r3]	@ _132, Y
 	mul	r3, r3, r2	@ _134, _133, _131
 	add	r3, r3, #16384	@ _135, _134,
-	ubfx	r3, r3, #0, #15	@ _136, _135,,
+	uxth	r3, r3	@ _136, _135
 	cmp	r3, #0	@ _136,
 	beq	.L33		@,
 @ iir_optimized.c:93: 		tmp_3 = ROUND_SHIFT((int)C3 *(int)Y[i] + (1<<14));
@@ -660,7 +660,7 @@ main:
 	ldrsh	r3, [fp, #-34]	@ _148, C4
 	mul	r3, r3, r5	@ _149, _148, Yi_minus_1
 	add	r3, r3, #16384	@ _150, _149,
-	ubfx	r3, r3, #0, #15	@ _151, _150,,
+	uxth	r3, r3	@ _151, _150
 	cmp	r3, #0	@ _151,
 	beq	.L35		@,
 @ iir_optimized.c:94: 		tmp_4 = ROUND_SHIFT((int)C4 *(int)Yi_minus_1 + (1<<14));
