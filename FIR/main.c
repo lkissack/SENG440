@@ -57,7 +57,7 @@ void FIR(int16_t *filter_coeffs, int16_t *input, int16_t *output, int length) //
          
   
 
-        for (k = 0; k < ((FILT_LENGTH)>>3); k++)
+        for (k = 0; k < ((FILT_LENGTH)>>2); k++)
         {  
             acc += temp1;
             acc += temp2;
