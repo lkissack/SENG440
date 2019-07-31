@@ -9,7 +9,7 @@ void filter_init(short int *X, short int *Y){
 	X[0] = X[1] = (short int) 0x8001;
 	
 	for(i =2; i<128; i++){
-		X[i] = (short int)0x7FFFF;
+		X[i] = (short int)0x7FFF;
 	}
 	Y[0] = Y[1] = (short int)0x8001;
 	
@@ -47,7 +47,7 @@ void main(){
 		tmp_1 = ((int)C1 *(int)X[i-1] + (1<<14))>>15;
 		tmp_2 = ((int)C2 *(int)X[i-2] + (1<<14))>>15;
 		tmp_3 = ((int)C3 *(int)Y[i-1] + (1<<14))>>15;
-		tmp_4 = ((int)C0 *(int)Y[i-2] + (1<<14))>>15;
+		tmp_4 = ((int)C4 *(int)Y[i-2] + (1<<14))>>15;
 		
 		Y[i] = short_int_clipping( tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 		print(i);
