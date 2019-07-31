@@ -53,7 +53,7 @@ void print(int i){
 
 void main(){
 	int run;
-	for(run = 0; run<1; run++){
+	for(run = 0; run<10000; run++){
 
 	//printf("Hello World\n");
 	const short int C0 = 0x10C8;
@@ -103,8 +103,8 @@ void main(){
 		//Currently has scale factor 2^15, but should switch to be 2^14
 		//Need to shift y inputs of filter if doing so
 		
-		print(i);
-		print(i+1);
+		//print(i);
+		//print(i+1);
 		
 	}
 	}
