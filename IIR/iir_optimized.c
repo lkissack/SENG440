@@ -72,11 +72,13 @@ void main(){
 		//loading operations
 		//not sure what (1<<14) is doing?
 		register int Xi = X.input[i];
-		register int Xi_minus_1 = X.input[i-1];		
-		tmp_2 = ROUND_SHIFT((int)C2 *(int)X.input[i-2] + (1<<14));
+		register int Xi_minus_1 = X.input[i-1];	
+		register int t2 = (int)C2 *(int)X.input[i-2] + (1<<14);
+		tmp_2 = ROUND_SHIFT(t2);
 		//tmp_2 = ((int)C2 *(int)X.input[i-2] + (1<<14))>>15;	
 		register int Yi_minus_1 = Y[i-1];
-		tmp_4 = ROUND_SHIFT((int)C4 *(int)Y[i-2] + (1<<14));
+		register int t4 = (int)C4 *(int)Y[i-2] + (1<<14);
+		tmp_4 = ROUND_SHIFT(t4);
 		//tmp_4 = ((int)C4 *(int)Y[i-2] + (1<<14))>>15;
 		
 		//calculations
