@@ -9,7 +9,7 @@ void filter_init(short int *X, short int *Y){
 	X[0] = X[1] = (short int) 0x8001;
 	
 	for(i =2; i<128; i++){
-		X[i] = (short int)0x7FFFF;
+		X[i] = (short int)0x7FFF;
 	}
 	Y[0] = Y[1] = (short int)0x8001;
 	
