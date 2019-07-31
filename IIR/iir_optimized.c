@@ -92,7 +92,7 @@ void main(){
 		//Y[i] = short_int_clipping(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 		Y[i] = (short int) SHORT_INT_CLIPPING(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 		
-		t0 = (int)C0 *(int)X.input[i+1] + (1<<14)
+		t0 = (int)C0 *(int)X.input[i+1] + (1<<14);
 		tmp_0 = ROUND_SHIFT(t0);
 		t1 = (int)C1 *(int)Xi + (1<<14);
 		tmp_1 = ROUND_SHIFT(t1);
