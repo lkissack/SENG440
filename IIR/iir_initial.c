@@ -19,6 +19,15 @@ void print(int i){
 	printf("Y[%2d]_=_%+6hi_=_%04hX_......._x[%2d]_=_%8.5f\n",i, Y[i], Y[i],i, ((float)Y[i])/32768);
 }
 
+short int short_int_clipping(int a){
+	int tmp = a;
+	if(tmp >= 32767)
+		tmp = 32767;
+	if(tmp <= -32767)
+		tmp = -32767;
+	return (short int) tmp;
+}
+
 void main(){
 
 	const short int C0 = 0x10C8;
@@ -40,7 +49,8 @@ void main(){
 		tmp_3 = ((int)C3 *(int)Y[i-1] + (1<<14))>>15;
 		tmp_4 = ((int)C0 *(int)Y[i-2] + (1<<14))>>15;
 		
-		Y[i] = (short int)( tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
+		Y[i] = short_int_clipping( tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
+		print(i);
 	}
 	
 }
