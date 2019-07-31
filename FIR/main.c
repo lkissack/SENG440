@@ -51,25 +51,52 @@ void FIR(int16_t *filter_coeffs, int16_t *input, int16_t *output, int length) //
 
             temp1 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
             temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-           
-            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+
+            acc += temp1;
+            acc += temp2;
+        
+            temp1 = (int32_t)(*h++)*(int32_t)(*x--);
+            temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+
+            acc += temp1;
+            acc += temp2;
+
+            temp1 = (int32_t)(*h++)*(int32_t)(*x--);
+            temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+            
+            acc += temp1;
+            acc += temp2;
+
+            temp1 = (int32_t)(*h++)*(int32_t)(*x--);
+            temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
          
   
 
-        for (k = 0; k < ((FILT_LENGTH)>>2); k++)
+        for (k = 0; k < ((FILT_LENGTH)>>3); k++)
         {  
             acc += temp1;
             acc += temp2;
-            
-
 
             temp1 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
             temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+
+            acc += temp1;
+            acc += temp2;
         
-            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+            temp1 = (int32_t)(*h++)*(int32_t)(*x--);
+            temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+
+            acc += temp1;
+            acc += temp2;
+
+            temp1 = (int32_t)(*h++)*(int32_t)(*x--);
+            temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
             
+            acc += temp1;
+            acc += temp2;
+
+            temp1 = (int32_t)(*h++)*(int32_t)(*x--);
+            temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
          
         }
         
