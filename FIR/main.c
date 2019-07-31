@@ -3,10 +3,10 @@
 #include <string.h>
 //#include <iostream>
 
-#define MAX_INPUT_LENGTH 800    //max number of input samples that can be handled per function call
+  
+#define SAMPLES   800    //max number of input samples that can be handled per function call
 #define FILT_LENGTH  500    //max filter length that can be hanled per function call    
-#define BUFF_LEN    (FILT_LENGTH - 1 + MAX_INPUT_LENGTH)
-#define SAMPLES   800
+#define BUFF_LEN    (FILT_LENGTH - 1 + SAMPLES)
 #define upper_limit 0x3fffffff//
 #define lower_limit -0x40000000//
 
@@ -47,56 +47,46 @@ void FIR(int16_t *filter_coeffs, int16_t *input, int16_t *output, int length) //
     h=filter_coeffs;
     x=&insamp[FILT_LENGTH - 1 + n]; //assign address of sample
 
-    acc = (1 << 14);// preload rounding constant
+    
 
             temp1 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
             temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
 
-            acc += temp1;
-            acc += temp2;
-        
-            temp1 = (int32_t)(*h++)*(int32_t)(*x--);
-            temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+       
+            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
 
-            acc += temp1;
-            acc += temp2;
-
-            temp1 = (int32_t)(*h++)*(int32_t)(*x--);
-            temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+       
+            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
             
-            acc += temp1;
-            acc += temp2;
-
-            temp1 = (int32_t)(*h++)*(int32_t)(*x--);
-            temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
          
-  
+            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+         
+         acc = (1 << 14);// preload rounding constant
 
         for (k = 0; k < ((FILT_LENGTH)>>3); k++)
         {  
             acc += temp1;
             acc += temp2;
 
-            temp1 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+           temp1 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
             temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
 
-            acc += temp1;
-            acc += temp2;
-        
-            temp1 = (int32_t)(*h++)*(int32_t)(*x--);
-            temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+       
+            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
 
-            acc += temp1;
-            acc += temp2;
-
-            temp1 = (int32_t)(*h++)*(int32_t)(*x--);
-            temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+       
+            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
             
-            acc += temp1;
-            acc += temp2;
+         
+            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
+            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and a
 
-            temp1 = (int32_t)(*h++)*(int32_t)(*x--);
-            temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+        
          
         }
         
