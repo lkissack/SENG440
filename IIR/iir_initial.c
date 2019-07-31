@@ -25,6 +25,9 @@ short int short_int_clipping(int a){
 		tmp = 32767;
 	if(tmp <= -32767)
 		tmp = -32767;
+	//implement von nueman rounding?
+	if(tmp&0x7FFF)
+		tmp|=0x8000;
 	return (short int) tmp;
 }
 
