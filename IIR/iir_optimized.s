@@ -641,7 +641,7 @@ main:
 	and	r3, r4, #128	@ _79, i,
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
 @	cmp	r3, #0	@ _79,
-	beq	.L36		@,
+	bne	.L36		@,
 @ iir_optimized.c:121: }
 	nop	
 	sub	sp, fp, #24	@,,
