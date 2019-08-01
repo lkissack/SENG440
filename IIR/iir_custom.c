@@ -52,7 +52,7 @@ void test_rs(){
 	register int t1 = 3452;
 	int tmp;
 	for (i = 0; i<100000; i++){
-		tmp = ROUND_SHIFT(t1);
+		tmp = ROUND_SHIFT(X.input[i%128]);
 	}
 		
 }
