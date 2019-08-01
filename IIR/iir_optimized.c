@@ -52,6 +52,7 @@ int round_shift(int a){
 		a|=0x8000;
 	}
 	return a>>15;
+}
 
 void print(int i){
 	printf("Y[%2d]_=_%+6hi_=_%04hX_......._x[%2d]_=_%8.5f\n",i, Y[i], Y[i],i, ((float)Y[i])/32768);
