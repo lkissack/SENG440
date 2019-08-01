@@ -322,7 +322,6 @@ main:
 	bl	filter_init_better		@
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
 	mov	r4, #2	@ i,
-	mov	r3, #1	@prevent extra comp later
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
 	b	.L15		@
 .L36:
@@ -642,7 +641,8 @@ main:
 	and	r3, r4, #128	@ _79, i,
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
 @	cmp	r3, #0	@ _79,
-	bne	.L36		@,
+@	beq	.L36		@,
+	cbz	r3,	.L36
 @ iir_optimized.c:121: }
 	nop	
 	sub	sp, fp, #24	@,,
