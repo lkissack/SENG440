@@ -98,11 +98,10 @@ FIR:
 	add	r2, r4, #32
 	mov	ip, r8
 .L5:
-	add	r3, ip, r3
-	add	ip, r3, r1
-	ldrsh	r1, [r2, #-16]
+	
+	ldrsh	fp, [r2, #-16]
 	ldrsh	r3, [r0, #16]
-	mul	r3, r3, r1
+	mla		r1, r3, fp, r1
 	ldrsh	r10, [r2, #-14]
 	ldrsh	fp, [r0, #14]
 	mul	fp, fp, r10
