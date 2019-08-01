@@ -47,13 +47,19 @@ short int short_int_clipping(int a){
 	return (short int) tmp;
 }
 
+int round_shift(int a){
+	if(a&0xFFFF){
+		a|=0x8000;
+	}
+	return a>>15;
+
 void print(int i){
 	printf("Y[%2d]_=_%+6hi_=_%04hX_......._x[%2d]_=_%8.5f\n",i, Y[i], Y[i],i, ((float)Y[i])/32768);
 }
 
 void main(){
-	//int run;
-	//for(run = 0; run<10000; run++){
+	int run;
+	for(run = 0; run<10000; run++){
 
 	//printf("Hello World\n");
 	const short int C0 = 0x10C8;
@@ -74,34 +80,44 @@ void main(){
 		register int Xi = X.input[i];
 		register int Xi_minus_1 = X.input[i-1];	
 		register int t2 = (int)C2 *(int)X.input[i-2] + (1<<14);
-		tmp_2 = ROUND_SHIFT(t2);
+		tmp_2 = round_shift(t2);
+		//tmp_2 = ROUND_SHIFT(t2);
 		//tmp_2 = ((int)C2 *(int)X.input[i-2] + (1<<14))>>15;	
 		register int Yi_minus_1 = Y[i-1];
 		register int t4 = (int)C4 *(int)Y[i-2] + (1<<14);
-		tmp_4 = ROUND_SHIFT(t4);
+		tmp_4 = round_shift(t4);
+		//tmp_4 = ROUND_SHIFT(t4);
 		//tmp_4 = ((int)C4 *(int)Y[i-2] + (1<<14))>>15;
 		
 		//calculations
 		register int t0 = (int)C0 *(int)Xi + (1<<14);
-		tmp_0 = ROUND_SHIFT(t0);
+		tmp_0 = round_shift(t0);
+		//tmp_0 = ROUND_SHIFT(t0);
 		register int t1 = (int)C1 *(int)Xi_minus_1 + (1<<14);
-		tmp_1 = ROUND_SHIFT(t1);
+		tmp_1 = round_shift(t1);
+		//tmp_1 = ROUND_SHIFT(t1);
 		register int t3 = (int)C3 *(int)Yi_minus_1 + (1<<14);
-		tmp_3 = ROUND_SHIFT(t3);
+		tmp_3 = round_shift(t3);
+		//tmp_3 = ROUND_SHIFT(t3);
 		//register int Yi = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
 		//Y[i] = short_int_clipping(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 		Y[i] = (short int) SHORT_INT_CLIPPING(tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4);
 		
 		t0 = (int)C0 *(int)X.input[i+1] + (1<<14);
-		tmp_0 = ROUND_SHIFT(t0);
+		tmp_0 = round_shift(t0);
+		//tmp_0 = ROUND_SHIFT(t0);
 		t1 = (int)C1 *(int)Xi + (1<<14);
-		tmp_1 = ROUND_SHIFT(t1);
+		tmp_1 = round_shift(t1);
+		//tmp_1 = ROUND_SHIFT(t1);
 		t2 = (int)C2 *(int)Xi_minus_1 + (1<<14);
-		tmp_2 = ROUND_SHIFT(t2);
+		tmp_2 = round_shift(t2);
+		//tmp_2 = ROUND_SHIFT(t2);
 		t3 = (int)C3 *(int)Y[i] + (1<<14);
-		tmp_3 = ROUND_SHIFT(t3);
+		tmp_3 = round_shift(t3);
+		//tmp_3 = ROUND_SHIFT(t3);
 		t4 = (int)C4 *(int)Yi_minus_1 + (1<<14);
-		tmp_4 = ROUND_SHIFT(t4);
+		tmp_4 = round_shift(t4);
+		//tmp_4 = ROUND_SHIFT(t4);
 		//register int Yi_plus_1 = tmp_0 +tmp_1 + tmp_2 + tmp_3 + tmp_4;
 		
 		//storing operations
@@ -117,5 +133,5 @@ void main(){
 		print(i+1);
 		
 	}
-	//}
+	}
 }
