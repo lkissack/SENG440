@@ -80,10 +80,10 @@ filter_init_better:
 	movt	r3, 32767	@ tmp119,
 	str	r3, [r2]	@ tmp119, *_3
 @ iir_optimized.c:19: 	for(i = 63; i; i--){
-	subs	r4, r4, #1	@ i, i,
+	sub	r4, r4, #1	@ i, i,
 .L2:
 @ iir_optimized.c:19: 	for(i = 63; i; i--){
-@	cmp	r4, #0	@ i,
+	cmp	r4, #0	@ i,
 	bne	.L3		@,
 @ iir_optimized.c:23: 	Y[0] = Y[1] = (short int)0x8001;
 	ldr	r3, [fp, #-12]	@ tmp120, Y
