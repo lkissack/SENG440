@@ -47,6 +47,16 @@ short int short_int_clipping(int a){
 	return (short int) tmp;
 }
 
+void test_rs(){
+	int i;
+	register int t1 = 3452;
+	int tmp;
+	for (i = 0; i<100000; i++){
+		tmp = ROUND_SHIFT(t1);
+	}
+		
+}
+
 void print(int i){
 	printf("Y[%2d]_=_%+6hi_=_%04hX_......._x[%2d]_=_%8.5f\n",i, Y[i], Y[i],i, ((float)Y[i])/32768);
 }
@@ -117,5 +127,6 @@ void main(){
 		print(i+1);
 		
 	}
+	test_rs();
 	
 }
