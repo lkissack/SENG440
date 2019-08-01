@@ -128,7 +128,7 @@ FIR:
 	add		r11, r11, #128
 	asr 	r11, r11, #6
 	add		r1, r1, #128
-	asr 	r1, r1, #-6
+	asr 	r1, r1, #6
 	ldrsh	fp, [r2, #4]
 	ldrsh	r3, [r0, #4]
 	mla		r11, r3, fp, r11
