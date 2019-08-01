@@ -6,7 +6,7 @@
 	.eabi_attribute 24, 1	@ Tag_ABI_align8_needed
 	.eabi_attribute 25, 1	@ Tag_ABI_align8_preserved
 	.eabi_attribute 26, 2	@ Tag_ABI_enum_size
-	.eabi_attribute 30, 1	@ Tag_ABI_optimization_goals
+	.eabi_attribute 30, 6	@ Tag_ABI_optimization_goals
 	.eabi_attribute 34, 1	@ Tag_CPU_unaligned_access
 	.eabi_attribute 18, 4	@ Tag_ABI_PCS_wchar_t
 	.file	"main.c"
@@ -15,292 +15,36 @@
 @ GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
 @ options passed:  main.c -mtune=generic-armv7-a -mfloat-abi=hard
 @ -mfpu=vfpv3-d16 -mabi=aapcs-linux -mtls-dialect=gnu -marm
-@ -march=armv7-a+fp -O1 -fverbose-asm
+@ -march=armv7-a+fp -O0 -fverbose-asm
 @ options enabled:  -faggressive-loop-optimizations -fauto-inc-dec
-@ -fbranch-count-reg -fchkp-check-incomplete-type -fchkp-check-read
-@ -fchkp-check-write -fchkp-instrument-calls -fchkp-narrow-bounds
-@ -fchkp-optimize -fchkp-store-bounds -fchkp-use-static-bounds
-@ -fchkp-use-static-const-bounds -fchkp-use-wrappers
-@ -fcombine-stack-adjustments -fcommon -fcompare-elim -fcprop-registers
-@ -fdefer-pop -fdelete-null-pointer-checks -fdwarf2-cfi-asm
-@ -fearly-inlining -feliminate-unused-debug-types -fforward-propagate
-@ -ffp-int-builtin-inexact -ffunction-cse -fgcse-lm -fgnu-runtime
-@ -fgnu-unique -fguess-branch-probability -fident -fif-conversion
-@ -fif-conversion2 -finline -finline-atomics -finline-functions-called-once
-@ -fipa-profile -fipa-pure-const -fipa-reference -fira-hoist-pressure
-@ -fira-share-save-slots -fira-share-spill-slots -fivopts
-@ -fkeep-static-consts -fleading-underscore -flifetime-dse
-@ -flto-odr-type-merging -fmath-errno -fmerge-constants
-@ -fmerge-debug-strings -fmove-loop-invariants -fomit-frame-pointer
-@ -fpeephole -fplt -fprefetch-loop-arrays -freg-struct-return
-@ -freorder-blocks -fsched-critical-path-heuristic
-@ -fsched-dep-count-heuristic -fsched-group-heuristic -fsched-interblock
-@ -fsched-last-insn-heuristic -fsched-pressure -fsched-rank-heuristic
-@ -fsched-spec -fsched-spec-insn-heuristic -fsched-stalled-insns-dep
-@ -fsection-anchors -fsemantic-interposition -fshow-column -fshrink-wrap
+@ -fchkp-check-incomplete-type -fchkp-check-read -fchkp-check-write
+@ -fchkp-instrument-calls -fchkp-narrow-bounds -fchkp-optimize
+@ -fchkp-store-bounds -fchkp-use-static-bounds
+@ -fchkp-use-static-const-bounds -fchkp-use-wrappers -fcommon
+@ -fdelete-null-pointer-checks -fdwarf2-cfi-asm -fearly-inlining
+@ -feliminate-unused-debug-types -ffp-int-builtin-inexact -ffunction-cse
+@ -fgcse-lm -fgnu-runtime -fgnu-unique -fident -finline-atomics
+@ -fira-hoist-pressure -fira-share-save-slots -fira-share-spill-slots
+@ -fivopts -fkeep-static-consts -fleading-underscore -flifetime-dse
+@ -flto-odr-type-merging -fmath-errno -fmerge-debug-strings -fpeephole
+@ -fplt -fprefetch-loop-arrays -freg-struct-return
+@ -fsched-critical-path-heuristic -fsched-dep-count-heuristic
+@ -fsched-group-heuristic -fsched-interblock -fsched-last-insn-heuristic
+@ -fsched-rank-heuristic -fsched-spec -fsched-spec-insn-heuristic
+@ -fsched-stalled-insns-dep -fsemantic-interposition -fshow-column
 @ -fshrink-wrap-separate -fsigned-zeros -fsplit-ivs-in-unroller
-@ -fsplit-wide-types -fssa-backprop -fssa-phiopt -fstdarg-opt
-@ -fstrict-volatile-bitfields -fsync-libcalls -ftoplevel-reorder
-@ -ftrapping-math -ftree-bit-ccp -ftree-builtin-call-dce -ftree-ccp
-@ -ftree-ch -ftree-coalesce-vars -ftree-copy-prop -ftree-cselim -ftree-dce
-@ -ftree-dominator-opts -ftree-dse -ftree-forwprop -ftree-fre
-@ -ftree-loop-if-convert -ftree-loop-im -ftree-loop-ivcanon
-@ -ftree-loop-optimize -ftree-parallelize-loops= -ftree-phiprop -ftree-pta
-@ -ftree-reassoc -ftree-scev-cprop -ftree-sink -ftree-slsr -ftree-sra
-@ -ftree-ter -funit-at-a-time -fverbose-asm -fzero-initialized-in-bss -marm
-@ -mbe32 -mglibc -mlittle-endian -mpic-data-is-text-relative -msched-prolog
+@ -fssa-backprop -fstdarg-opt -fstrict-volatile-bitfields -fsync-libcalls
+@ -ftrapping-math -ftree-cselim -ftree-forwprop -ftree-loop-if-convert
+@ -ftree-loop-im -ftree-loop-ivcanon -ftree-loop-optimize
+@ -ftree-parallelize-loops= -ftree-phiprop -ftree-reassoc -ftree-scev-cprop
+@ -funit-at-a-time -fverbose-asm -fzero-initialized-in-bss -marm -mbe32
+@ -mglibc -mlittle-endian -mpic-data-is-text-relative -msched-prolog
 @ -munaligned-access -mvectorize-with-neon-quad
 
 	.text
-	.align	2
-	.global	FIR_Init
-	.arch armv7-a
-	.syntax unified
-	.arm
-	.fpu vfpv3-d16
-	.type	FIR_Init, %function
-FIR_Init:
-	@ args = 0, pretend = 0, frame = 0
-	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, lr}	@
-@ main.c:25:     memset( insamp, 0, sizeof( insamp ) );//initiate space in memory
-	movw	r2, #2598	@,
-	mov	r1, #0	@,
-	movw	r0, #:lower16:insamp	@,
-	movt	r0, #:upper16:insamp	@,
-	bl	memset		@
-@ main.c:26: }
-	pop	{r4, pc}	@
-	.size	FIR_Init, .-FIR_Init
-	.align	2
-	.global	FIR
-	.syntax unified
-	.arm
-	.fpu vfpv3-d16
-	.type	FIR, %function
-FIR:
-	@ args = 0, pretend = 0, frame = 8
-	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}	@
-	sub	sp, sp, #12	@,,
-	mov	r5, r0	@ filter_coeffs, filter_coeffs
-	mov	r10, r2	@ output, output
-	mov	r4, r3	@ length, length
-@ main.c:42:  memcpy( &insamp[FILT_LENGTH - 1], input, length * sizeof(int16_t));
-	lsl	r6, r3, #1	@ _2, length,
-	str	r6, [sp, #4]	@ _2, %sfp
-	mov	r2, r6	@, _2
-	ldr	r0, .L10	@,
-	bl	memcpy		@
-@ main.c:45:     for (n = 0; n<length; n++)
-	cmp	r4, #0	@ length,
-	ble	.L4		@,
-	ldr	r2, .L10+4	@ ivtmp.43,
-	sub	r10, r10, #2	@ ivtmp.45, output,
-	add	fp, r10, r6	@ _143, ivtmp.45, _2
-	add	r8, r5, #1012	@ _128, filter_coeffs,
-.L6:
-@ main.c:52: 	temp1 = (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r3, [r5]	@ *filter_coeffs_62(D), *filter_coeffs_62(D)
-@ main.c:52: 	temp1 = (int32_t)(*h++)*(int32_t)(*x--);
-	mov	ip, r2	@ ivtmp.43, ivtmp.43
-	ldrsh	r1, [ip, #2]!	@ MEM[base: _145, offset: 2B], MEM[base: _145, offset: 2B]
-@ main.c:52: 	temp1 = (int32_t)(*h++)*(int32_t)(*x--);
-	mul	r1, r1, r3	@ temp1, MEM[base: _145, offset: 2B], *filter_coeffs_62(D)
-@ main.c:53: 	temp2 = (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r3, [r5, #2]	@ MEM[(int16_t *)filter_coeffs_62(D) + 2B], MEM[(int16_t *)filter_coeffs_62(D) + 2B]
-@ main.c:53: 	temp2 = (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r0, [r2], #-18	@ MEM[base: _145, offset: 0B], MEM[base: _145, offset: 0B]
-@ main.c:53: 	temp2 = (int32_t)(*h++)*(int32_t)(*x--);
-	mul	r0, r0, r3	@ temp2, MEM[base: _145, offset: 0B], MEM[(int16_t *)filter_coeffs_62(D) + 2B]
-	add	r3, r5, #20	@ ivtmp.27, filter_coeffs,
-@ main.c:50:     acc = (1 << 14);// preload rounding constant
-	mov	lr, #16384	@ acc,
-.L5:
-@ main.c:60:             acc += temp1;
-	add	r1, lr, r1	@ acc, acc, temp1
-@ main.c:61:             acc += temp2;
-	add	lr, r1, r0	@ acc, acc, temp2
-@ main.c:63:             temp1 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	ldrsh	r6, [r3, #-16]	@ MEM[base: _94, offset: 4294967280B], MEM[base: _94, offset: 4294967280B]
-@ main.c:63:             temp1 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	ldrsh	r4, [r2, #16]	@ MEM[base: _126, offset: 16B], MEM[base: _126, offset: 16B]
-@ main.c:68:             temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	ldrsh	r9, [r3, #-14]	@ MEM[base: _94, offset: 4294967282B], MEM[base: _94, offset: 4294967282B]
-@ main.c:68:             temp2 = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	ldrsh	r1, [r2, #14]	@ MEM[base: _126, offset: 14B], MEM[base: _126, offset: 14B]
-@ main.c:74:            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r0, [r3, #-12]	@ MEM[base: _94, offset: 4294967284B], MEM[base: _94, offset: 4294967284B]
-@ main.c:74:            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r7, [r2, #12]	@ MEM[base: _126, offset: 12B], MEM[base: _126, offset: 12B]
-@ main.c:74:            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-	mul	r7, r7, r0	@ tmp209, MEM[base: _126, offset: 12B], MEM[base: _94, offset: 4294967284B]
-@ main.c:74:            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-	mla	r4, r4, r6, r7	@ temp1, MEM[base: _126, offset: 16B], MEM[base: _94, offset: 4294967280B], tmp209
-@ main.c:79:            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	ldrsh	r6, [r3, #-10]	@ MEM[base: _94, offset: 4294967286B], MEM[base: _94, offset: 4294967286B]
-@ main.c:79:            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	ldrsh	r0, [r2, #10]	@ MEM[base: _126, offset: 10B], MEM[base: _126, offset: 10B]
-@ main.c:79:            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	mul	r0, r0, r6	@ tmp212, MEM[base: _126, offset: 10B], MEM[base: _94, offset: 4294967286B]
-@ main.c:79:            temp2 += (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
-	mla	r0, r1, r9, r0	@ temp2, MEM[base: _126, offset: 14B], MEM[base: _94, offset: 4294967282B], tmp212
-@ main.c:83:            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r1, [r3, #-8]	@ MEM[base: _94, offset: 4294967288B], MEM[base: _94, offset: 4294967288B]
-@ main.c:83:            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r6, [r2, #8]	@ MEM[base: _126, offset: 8B], MEM[base: _126, offset: 8B]
-@ main.c:83:            temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-	mla	r6, r6, r1, r4	@ temp1, MEM[base: _126, offset: 8B], MEM[base: _94, offset: 4294967288B], temp1
-@ main.c:88:            temp2 += (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r4, [r3, #-6]	@ MEM[base: _94, offset: 4294967290B], MEM[base: _94, offset: 4294967290B]
-@ main.c:88:            temp2 += (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r1, [r2, #6]	@ MEM[base: _126, offset: 6B], MEM[base: _126, offset: 6B]
-@ main.c:88:            temp2 += (int32_t)(*h++)*(int32_t)(*x--);
-	mla	r4, r1, r4, r0	@ temp2, MEM[base: _126, offset: 6B], MEM[base: _94, offset: 4294967290B], temp2
-@ main.c:89:             temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r1, [r3, #-4]	@ MEM[base: _94, offset: 4294967292B], MEM[base: _94, offset: 4294967292B]
-@ main.c:89:             temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r0, [r2, #4]	@ MEM[base: _126, offset: 4B], MEM[base: _126, offset: 4B]
-@ main.c:89:             temp1 += (int32_t)(*h++)*(int32_t)(*x--);
-	mla	r1, r0, r1, r6	@ temp1, MEM[base: _126, offset: 4B], MEM[base: _94, offset: 4294967292B], temp1
-@ main.c:94:            temp2 += (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r0, [r3, #-2]	@ MEM[base: _94, offset: 4294967294B], MEM[base: _94, offset: 4294967294B]
-@ main.c:94:            temp2 += (int32_t)(*h++)*(int32_t)(*x--);
-	ldrsh	r6, [r2, #2]	@ MEM[base: _126, offset: 2B], MEM[base: _126, offset: 2B]
-@ main.c:94:            temp2 += (int32_t)(*h++)*(int32_t)(*x--);
-	mla	r0, r6, r0, r4	@ temp2, MEM[base: _126, offset: 2B], MEM[base: _94, offset: 4294967294B], temp2
-	add	r3, r3, #16	@ ivtmp.27, ivtmp.27,
-	sub	r2, r2, #16	@ ivtmp.29, ivtmp.29,
-@ main.c:58:         for (k = 0; k < ((FILT_LENGTH)>>3); k++)
-	cmp	r3, r8	@ ivtmp.27, _128
-	bne	.L5		@,
-@ main.c:98:         acc += temp1;
-	add	r3, lr, r1	@ acc, acc, temp1
-@ main.c:99:         acc += temp2;
-	add	r3, r0, r3	@ acc, temp2, acc
-@ main.c:108:         output[n] = (int16_t)(acc>>15);//convert to 16 bit
-	asr	r3, r3, #15	@ tmp226, acc,
-@ main.c:108:         output[n] = (int16_t)(acc>>15);//convert to 16 bit
-	strh	r3, [r10, #2]!	@ movhi	@ tmp226, MEM[base: _138, offset: 0B]
-	mov	r2, ip	@ ivtmp.43, ivtmp.43
-@ main.c:45:     for (n = 0; n<length; n++)
-	cmp	r10, fp	@ ivtmp.45, _143
-	bne	.L6		@,
-.L4:
-@ main.c:112:  memmove(&insamp[0], &insamp[length], (FILT_LENGTH - 1) * sizeof(int16_t) );
-	movw	r0, #:lower16:insamp	@ tmp228,
-	movt	r0, #:upper16:insamp	@ tmp228,
-@ main.c:112:  memmove(&insamp[0], &insamp[length], (FILT_LENGTH - 1) * sizeof(int16_t) );
-	movw	r2, #998	@,
-	ldr	r3, [sp, #4]	@ _2, %sfp
-	add	r1, r0, r3	@, tmp228, _2
-	bl	memmove		@
-@ main.c:113: }
-	add	sp, sp, #12	@,,
-	@ sp needed	@
-	pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}	@
-.L11:
-	.align	2
-.L10:
-	.word	insamp+998
-	.word	insamp+996
-	.size	FIR, .-FIR
-	.align	2
-	.global	main
-	.syntax unified
-	.arm
-	.fpu vfpv3-d16
-	.type	main, %function
-main:
-	@ args = 0, pretend = 0, frame = 3200
-	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, r6, r7, r8, lr}	@
-	sub	sp, sp, #3200	@,,
-@ main.c:124:     in_fid = fopen( "noisy.wav", "rb" );
-	movw	r1, #:lower16:.LC0	@,
-	movt	r1, #:upper16:.LC0	@,
-	movw	r0, #:lower16:.LC1	@,
-	movt	r0, #:upper16:.LC1	@,
-	bl	fopen		@
-@ main.c:125:     if ( in_fid == 0 ) {
-	subs	r8, r0, #0	@ in_fid,
-	beq	.L18		@,
-@ main.c:131:     out_fid = fopen( "outputFIR.wav", "wb" );
-	movw	r1, #:lower16:.LC3	@,
-	movt	r1, #:upper16:.LC3	@,
-	movw	r0, #:lower16:.LC4	@,
-	movt	r0, #:upper16:.LC4	@,
-	bl	fopen		@
-@ main.c:132:     if ( out_fid == 0 ) {
-	subs	r7, r0, #0	@ out_fid,
-	beq	.L19		@,
-@ main.c:138:     FIR_Init();
-	bl	FIR_Init		@
-@ main.c:143:         size = fread( input, sizeof(int16_t), SAMPLES, in_fid );
-	mov	r5, #2	@ tmp128,
-@ main.c:145:         FIR( coeffs, input, output, size);
-	movw	r6, #:lower16:.LANCHOR0	@ tmp124,
-	movt	r6, #:upper16:.LANCHOR0	@ tmp124,
-.L15:
-@ main.c:143:         size = fread( input, sizeof(int16_t), SAMPLES, in_fid );
-	mov	r3, r8	@, in_fid
-	mov	r2, #800	@,
-	mov	r1, r5	@, tmp128
-	add	r0, sp, #1600	@ tmp129,,
-	bl	fread		@
-	mov	r4, r0	@ _1,
-@ main.c:145:         FIR( coeffs, input, output, size);
-	mov	r3, r0	@, _1
-	mov	r2, sp	@,
-	add	r1, sp, #1600	@ tmp130,,
-	mov	r0, r6	@, tmp124
-	bl	FIR		@
-@ main.c:147:         fwrite( output, sizeof(int16_t), size, out_fid );
-	mov	r3, r7	@, out_fid
-	mov	r2, r4	@, _1
-	mov	r1, r5	@, tmp128
-	mov	r0, sp	@,
-	bl	fwrite		@
-@ main.c:148:     } while ( size != 0 );
-	cmp	r4, #0	@ _1,
-	bne	.L15		@,
-@ main.c:150:     fclose( in_fid );
-	mov	r0, r8	@, in_fid
-	bl	fclose		@
-@ main.c:151:     fclose( out_fid );
-	mov	r0, r7	@, out_fid
-	bl	fclose		@
-@ main.c:153:     printf("Filtering Complete \n");
-	movw	r0, #:lower16:.LC6	@,
-	movt	r0, #:upper16:.LC6	@,
-	bl	puts		@
-@ main.c:158: }
-	mov	r0, #0	@,
-	add	sp, sp, #3200	@,,
-	@ sp needed	@
-	pop	{r4, r5, r6, r7, r8, pc}	@
-.L18:
-@ main.c:126:         printf("couldn't open input file");
-	movw	r0, #:lower16:.LC2	@,
-	movt	r0, #:upper16:.LC2	@,
-	bl	printf		@
-@ main.c:127:         exit(EXIT_FAILURE);
-	mov	r0, #1	@,
-	bl	exit		@
-.L19:
-@ main.c:133:         printf("couldn't open output file");
-	movw	r0, #:lower16:.LC5	@,
-	movt	r0, #:upper16:.LC5	@,
-	bl	printf		@
-@ main.c:134:         exit(EXIT_FAILURE);
-	mov	r0, #1	@,
-	bl	exit		@
-	.size	main, .-main
-	.comm	insamp,2598,4
 	.global	coeffs
 	.data
 	.align	2
-	.set	.LANCHOR0,. + 0
 	.type	coeffs, %object
 	.size	coeffs, 1000
 coeffs:
@@ -804,27 +548,304 @@ coeffs:
 	.short	-1
 	.short	6
 	.short	-1
-	.section	.rodata.str1.4,"aMS",%progbits,1
+	.comm	insamp,2598,4
+	.text
+	.align	2
+	.global	FIR_Init
+	.arch armv7-a
+	.syntax unified
+	.arm
+	.fpu vfpv3-d16
+	.type	FIR_Init, %function
+FIR_Init:
+	@ args = 0, pretend = 0, frame = 0
+	@ frame_needed = 1, uses_anonymous_args = 0
+	push	{fp, lr}	@
+	add	fp, sp, #4	@,,
+@ main.c:25:     memset( insamp, 0, sizeof( insamp ) );//initiate space in memory
+	movw	r2, #2598	@,
+	mov	r1, #0	@,
+	movw	r0, #:lower16:insamp	@,
+	movt	r0, #:upper16:insamp	@,
+	bl	memset		@
+@ main.c:26: }
+	nop	
+	pop	{fp, pc}	@
+	.size	FIR_Init, .-FIR_Init
+	.align	2
+	.global	FIR
+	.syntax unified
+	.arm
+	.fpu vfpv3-d16
+	.type	FIR, %function
+FIR:
+	@ args = 4, pretend = 0, frame = 40
+	@ frame_needed = 1, uses_anonymous_args = 0
+	push	{fp, lr}	@
+	add	fp, sp, #4	@,,
+	sub	sp, sp, #40	@,,
+	str	r0, [fp, #-32]	@ filter_coeffs, filter_coeffs
+	str	r1, [fp, #-36]	@ input, input
+	str	r2, [fp, #-40]	@ output, output
+	str	r3, [fp, #-44]	@ length, length
+@ main.c:40:  memcpy( &insamp[filt_length - 1], input, length * sizeof(int16_t)); //copy the samples out of memory into the buffer
+	ldr	r3, [fp, #4]	@ tmp131, filt_length
+	sub	r3, r3, #1	@ _1, tmp131,
+@ main.c:40:  memcpy( &insamp[filt_length - 1], input, length * sizeof(int16_t)); //copy the samples out of memory into the buffer
+	lsl	r2, r3, #1	@ tmp132, _1,
+	movw	r3, #:lower16:insamp	@ tmp133,
+	movt	r3, #:upper16:insamp	@ tmp133,
+	add	r0, r2, r3	@ _2, tmp132, tmp133
+@ main.c:40:  memcpy( &insamp[filt_length - 1], input, length * sizeof(int16_t)); //copy the samples out of memory into the buffer
+	ldr	r3, [fp, #-44]	@ length.0_3, length
+	lsl	r3, r3, #1	@ _4, length.0_3,
+	mov	r2, r3	@, _4
+	ldr	r1, [fp, #-36]	@, input
+	bl	memcpy		@
+@ main.c:43:     for (int n = 0; n<length; n++)
+	mov	r3, #0	@ tmp134,
+	str	r3, [fp, #-20]	@ tmp134, n
+@ main.c:43:     for (int n = 0; n<length; n++)
+	b	.L3		@
+.L6:
+@ main.c:45:     h=filter_coeffs;
+	ldr	r3, [fp, #-32]	@ tmp135, filter_coeffs
+	str	r3, [fp, #-12]	@ tmp135, h
+@ main.c:46:     x=&insamp[filt_length - 1 + n]; //assign address of sample
+	ldr	r3, [fp, #4]	@ tmp136, filt_length
+	sub	r2, r3, #1	@ _5, tmp136,
+@ main.c:46:     x=&insamp[filt_length - 1 + n]; //assign address of sample
+	ldr	r3, [fp, #-20]	@ tmp137, n
+	add	r3, r2, r3	@ _6, _5, tmp137
+@ main.c:46:     x=&insamp[filt_length - 1 + n]; //assign address of sample
+	lsl	r2, r3, #1	@ tmp138, _6,
+	movw	r3, #:lower16:insamp	@ tmp140,
+	movt	r3, #:upper16:insamp	@ tmp140,
+	add	r3, r2, r3	@ tmp139, tmp138, tmp140
+	str	r3, [fp, #-16]	@ tmp139, x
+@ main.c:48:         for (int k = 0; k<filt_length; k++)
+	mov	r3, #0	@ tmp141,
+	str	r3, [fp, #-24]	@ tmp141, k
+@ main.c:48:         for (int k = 0; k<filt_length; k++)
+	b	.L4		@
+.L5:
+@ main.c:50:             temp = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+	ldr	r3, [fp, #-12]	@ h.1_7, h
+	add	r2, r3, #2	@ tmp142, h.1_7,
+	str	r2, [fp, #-12]	@ tmp142, h
+@ main.c:50:             temp = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+	ldrsh	r3, [r3]	@ _8, *h.1_7
+@ main.c:50:             temp = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+	mov	r1, r3	@ _9, _8
+@ main.c:50:             temp = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+	ldr	r3, [fp, #-16]	@ x.2_10, x
+	sub	r2, r3, #2	@ tmp143, x.2_10,
+	str	r2, [fp, #-16]	@ tmp143, x
+@ main.c:50:             temp = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+	ldrsh	r3, [r3]	@ _11, *x.2_10
+@ main.c:50:             temp = (int32_t)(*h++)*(int32_t)(*x--); //perform multiplication and add to accumulator
+	mul	r3, r3, r1	@ tmp144, _12, _9
+	str	r3, [fp, #-28]	@ tmp144, temp
+@ main.c:53:             acc = acc + temp;
+	ldr	r2, [fp, #-8]	@ tmp146, acc
+	ldr	r3, [fp, #-28]	@ tmp147, temp
+	add	r3, r2, r3	@ tmp145, tmp146, tmp147
+	str	r3, [fp, #-8]	@ tmp145, acc
+@ main.c:48:         for (int k = 0; k<filt_length; k++)
+	ldr	r3, [fp, #-24]	@ tmp149, k
+	add	r3, r3, #1	@ tmp148, tmp149,
+	str	r3, [fp, #-24]	@ tmp148, k
+.L4:
+@ main.c:48:         for (int k = 0; k<filt_length; k++)
+	ldr	r2, [fp, #-24]	@ tmp150, k
+	ldr	r3, [fp, #4]	@ tmp151, filt_length
+	cmp	r2, r3	@ tmp150, tmp151
+	blt	.L5		@,
+@ main.c:62:         acc = acc + (1 << 14);
+	ldr	r3, [fp, #-8]	@ tmp153, acc
+	add	r3, r3, #16384	@ tmp152, tmp153,
+	str	r3, [fp, #-8]	@ tmp152, acc
+@ main.c:63:         output[n] = (int16_t)(acc>>15);//convert to 16 bit
+	ldr	r3, [fp, #-8]	@ tmp154, acc
+	asr	r1, r3, #15	@ _13, tmp154,
+@ main.c:63:         output[n] = (int16_t)(acc>>15);//convert to 16 bit
+	ldr	r3, [fp, #-20]	@ n.3_14, n
+	lsl	r3, r3, #1	@ _15, n.3_14,
+	ldr	r2, [fp, #-40]	@ tmp155, output
+	add	r3, r2, r3	@ _16, tmp155, _15
+@ main.c:63:         output[n] = (int16_t)(acc>>15);//convert to 16 bit
+	sxth	r2, r1	@ _17, _13
+@ main.c:63:         output[n] = (int16_t)(acc>>15);//convert to 16 bit
+	strh	r2, [r3]	@ movhi	@ _17, *_16
+@ main.c:43:     for (int n = 0; n<length; n++)
+	ldr	r3, [fp, #-20]	@ tmp157, n
+	add	r3, r3, #1	@ tmp156, tmp157,
+	str	r3, [fp, #-20]	@ tmp156, n
+.L3:
+@ main.c:43:     for (int n = 0; n<length; n++)
+	ldr	r2, [fp, #-20]	@ tmp158, n
+	ldr	r3, [fp, #-44]	@ tmp159, length
+	cmp	r2, r3	@ tmp158, tmp159
+	blt	.L6		@,
+@ main.c:67:  memmove(&insamp[0], &insamp[length], (filt_length - 1) * sizeof(int16_t) );
+	ldr	r3, [fp, #-44]	@ tmp161, length
+	lsl	r2, r3, #1	@ tmp160, tmp161,
+	movw	r3, #:lower16:insamp	@ tmp162,
+	movt	r3, #:upper16:insamp	@ tmp162,
+	add	r1, r2, r3	@ _18, tmp160, tmp162
+@ main.c:67:  memmove(&insamp[0], &insamp[length], (filt_length - 1) * sizeof(int16_t) );
+	ldr	r3, [fp, #4]	@ tmp163, filt_length
+	sub	r3, r3, #1	@ _19, tmp163,
+@ main.c:67:  memmove(&insamp[0], &insamp[length], (filt_length - 1) * sizeof(int16_t) );
+	lsl	r3, r3, #1	@ _21, _20,
+	mov	r2, r3	@, _21
+	movw	r0, #:lower16:insamp	@,
+	movt	r0, #:upper16:insamp	@,
+	bl	memmove		@
+@ main.c:68: }
+	nop	
+	sub	sp, fp, #4	@,,
+	@ sp needed	@
+	pop	{fp, pc}	@
+	.size	FIR, .-FIR
+	.section	.rodata
 	.align	2
 .LC0:
 	.ascii	"rb\000"
-	.space	1
+	.align	2
 .LC1:
 	.ascii	"noisy.wav\000"
-	.space	2
+	.align	2
 .LC2:
 	.ascii	"couldn't open input file\000"
-	.space	3
+	.align	2
 .LC3:
 	.ascii	"wb\000"
-	.space	1
+	.align	2
 .LC4:
 	.ascii	"outputFIR.wav\000"
-	.space	2
+	.align	2
 .LC5:
 	.ascii	"couldn't open output file\000"
-	.space	2
+	.align	2
 .LC6:
 	.ascii	"Filtering Complete \000"
+	.align	2
+.LC7:
+	.ascii	"%d \012\000"
+	.text
+	.align	2
+	.global	main
+	.syntax unified
+	.arm
+	.fpu vfpv3-d16
+	.type	main, %function
+main:
+	@ args = 0, pretend = 0, frame = 3216
+	@ frame_needed = 1, uses_anonymous_args = 0
+	push	{fp, lr}	@
+	add	fp, sp, #4	@,,
+	sub	sp, sp, #3216	@,,
+	sub	sp, sp, #8	@,,
+@ main.c:79:     in_fid = fopen( "noisy.wav", "rb" );
+	movw	r1, #:lower16:.LC0	@,
+	movt	r1, #:upper16:.LC0	@,
+	movw	r0, #:lower16:.LC1	@,
+	movt	r0, #:upper16:.LC1	@,
+	bl	fopen		@
+	str	r0, [fp, #-8]	@, in_fid
+@ main.c:80:     if ( in_fid == 0 ) {
+	ldr	r3, [fp, #-8]	@ tmp114, in_fid
+	cmp	r3, #0	@ tmp114,
+	bne	.L8		@,
+@ main.c:81:         printf("couldn't open input file");
+	movw	r0, #:lower16:.LC2	@,
+	movt	r0, #:upper16:.LC2	@,
+	bl	printf		@
+@ main.c:82:         exit(EXIT_FAILURE);
+	mov	r0, #1	@,
+	bl	exit		@
+.L8:
+@ main.c:86:     out_fid = fopen( "outputFIR.wav", "wb" );
+	movw	r1, #:lower16:.LC3	@,
+	movt	r1, #:upper16:.LC3	@,
+	movw	r0, #:lower16:.LC4	@,
+	movt	r0, #:upper16:.LC4	@,
+	bl	fopen		@
+	str	r0, [fp, #-12]	@, out_fid
+@ main.c:87:     if ( out_fid == 0 ) {
+	ldr	r3, [fp, #-12]	@ tmp115, out_fid
+	cmp	r3, #0	@ tmp115,
+	bne	.L9		@,
+@ main.c:88:         printf("couldn't open output file");
+	movw	r0, #:lower16:.LC5	@,
+	movt	r0, #:upper16:.LC5	@,
+	bl	printf		@
+@ main.c:89:         exit(EXIT_FAILURE);
+	mov	r0, #1	@,
+	bl	exit		@
+.L9:
+@ main.c:93:     FIR_Init();
+	bl	FIR_Init		@
+.L10:
+@ main.c:98:         size = fread( input, sizeof(int16_t), SAMPLES, in_fid );
+	sub	r0, fp, #1600	@ tmp116,,
+	sub	r0, r0, #4	@ tmp116, tmp116,
+	sub	r0, r0, #12	@ tmp116, tmp116,
+	ldr	r3, [fp, #-8]	@, in_fid
+	mov	r2, #800	@,
+	mov	r1, #2	@,
+	bl	fread		@
+	mov	r3, r0	@ _1,
+@ main.c:98:         size = fread( input, sizeof(int16_t), SAMPLES, in_fid );
+	str	r3, [fp, #-16]	@ _1, size
+@ main.c:100:         FIR( coeffs, input, output, size, MAX_FILT_LENGTH );
+	sub	r2, fp, #3200	@ tmp117,,
+	sub	r2, r2, #4	@ tmp117, tmp117,
+	sub	r2, r2, #12	@ tmp117, tmp117,
+	sub	r1, fp, #1600	@ tmp118,,
+	sub	r1, r1, #4	@ tmp118, tmp118,
+	sub	r1, r1, #12	@ tmp118, tmp118,
+	mov	r3, #500	@ tmp119,
+	str	r3, [sp]	@ tmp119,
+	ldr	r3, [fp, #-16]	@, size
+	movw	r0, #:lower16:coeffs	@,
+	movt	r0, #:upper16:coeffs	@,
+	bl	FIR		@
+@ main.c:102:         fwrite( output, sizeof(int16_t), size, out_fid );
+	ldr	r2, [fp, #-16]	@ size.4_2, size
+	sub	r0, fp, #3200	@ tmp120,,
+	sub	r0, r0, #4	@ tmp120, tmp120,
+	sub	r0, r0, #12	@ tmp120, tmp120,
+	ldr	r3, [fp, #-12]	@, out_fid
+	mov	r1, #2	@,
+	bl	fwrite		@
+@ main.c:103:     } while ( size != 0 );
+	ldr	r3, [fp, #-16]	@ tmp121, size
+	cmp	r3, #0	@ tmp121,
+	bne	.L10		@,
+@ main.c:105:     fclose( in_fid );
+	ldr	r0, [fp, #-8]	@, in_fid
+	bl	fclose		@
+@ main.c:106:     fclose( out_fid );
+	ldr	r0, [fp, #-12]	@, out_fid
+	bl	fclose		@
+@ main.c:108:     printf("Filtering Complete \n");
+	movw	r0, #:lower16:.LC6	@,
+	movt	r0, #:upper16:.LC6	@,
+	bl	puts		@
+@ main.c:109:     printf("%d \n",(int)sizeof(coeffs));
+	mov	r1, #1000	@,
+	movw	r0, #:lower16:.LC7	@,
+	movt	r0, #:upper16:.LC7	@,
+	bl	printf		@
+@ main.c:112:     return 0;
+	mov	r3, #0	@ _22,
+@ main.c:113: }
+	mov	r0, r3	@, <retval>
+	sub	sp, fp, #4	@,,
+	@ sp needed	@
+	pop	{fp, pc}	@
+	.size	main, .-main
 	.ident	"GCC: (GNU) 8.2.1 20180801 (Red Hat 8.2.1-2)"
 	.section	.note.GNU-stack,"",%progbits
