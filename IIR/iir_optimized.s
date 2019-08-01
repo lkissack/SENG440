@@ -638,7 +638,7 @@ main:
 	add	r4, r4, #2	@ i, i,
 .L15:
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
-	and	r3, r4, #128	@ _79, i,
+	ands	r3, r4, #128	@ _79, i,
 @ iir_optimized.c:71: 	for (i =2; !(i&0x80); i+=2){
 @	cmp	r3, #0	@ _79,
 	beq	.L36		@,
