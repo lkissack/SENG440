@@ -101,50 +101,49 @@ FIR:
 	
 	ldrsh	fp, [r2, #-16]
 	ldrsh	r3, [r0, #16]
-	mla		r1, r3, fp, r1
+	mla		r11, r3, fp, r11
 	ldrsh	r10, [r2, #-14]
 	ldrsh	fp, [r0, #14]
-	mul	fp, fp, r10
-	add	r1, r3, #128
-	add	r10, fp, #128
+	mla		r1, fp, r10, r1
+	add		r11, r11, #128
+	asr 	r11, r11, #6
+	add		r1, r1, #128
+	asr 	r1, r1, #6
 	ldrsh	fp, [r2, #-12]
 	ldrsh	r3, [r0, #12]
-	mul	r3, r3, fp
-	add	r3, r3, r1, asr #6
-	ldrsh	r1, [r2, #-10]
+	mla		r11, r3, fp, r11
+	ldrsh	r10, [r2, #-10]
 	ldrsh	fp, [r0, #10]
-	mul	fp, fp, r1
-	add	fp, fp, r10, asr #6
-	add	r3, r3, #128
-	add	fp, fp, #128
-	ldrsh	r10, [r2, #-8]
-	ldrsh	r1, [r0, #8]
-	mul	r1, r1, r10
-	add	r3, r1, r3, asr #6
+	mla		r1, fp, r10, r1
+	add		r11, r11, #128
+	asr 	r11, r11, #6
+	add		r1, r1, #128
+	asr 	r1, r1, #6
+	ldrsh	fp, [r2, #-8]
+	ldrsh	r3, [r0, #8]
+	mla		r11, r3, fp, r11
 	ldrsh	r10, [r2, #-6]
-	ldrsh	r1, [r0, #6]
-	mul	r1, r1, r10
-	add	r1, r1, fp, asr #6
-	add	r3, r3, #128
-	add	r10, r1, #128
-	ldrsh	fp, [r2, #-4]
-	ldrsh	r1, [r0, #4]
-	mul	r1, r1, fp
-	add	r3, r1, r3, asr #6
-	ldrsh	fp, [r2, #-2]
-	ldrsh	r1, [r0, #2]
-	mul	r1, r1, fp
-	add	r1, r1, r10, asr #6
-	add	r3, r3, #128
-	asr	r3, r3, #6
-	add	r1, r1, #128
-	asr	r1, r1, #6
+	ldrsh	fp, [r0, #6]
+	mla		r1, fp, r10, r1
+	add		r11, r11, #128
+	asr 	r11, r11, #6
+	add		r1, r1, #128
+	asr 	r1, r1, #-6
+	ldrsh	fp, [r2, #4]
+	ldrsh	r3, [r0, #4]
+	mla		r11, r3, fp, r11
+	ldrsh	r10, [r2, #-2]
+	ldrsh	fp, [r0, #2]
+	mla		r1, fp, r10, r1
+	add		r11, r11, #128
+	asr 	r11, r11, #6
+	add		r1, r1, #128
+	asr 	r1, r1, #6
 	add	r2, r2, #16
 	sub	r0, r0, #16
 	cmp	r2, lr
 	bne	.L5
-	add	r3, ip, r3
-	add	r1, r1, r3
+	add	r1, r1, r11
 	asr	r1, r1, #9
 	strh	r1, [r7, #2]!	@ movhi
 	mov	r0, r6
