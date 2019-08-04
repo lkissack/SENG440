@@ -1,17 +1,16 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
+#include <stdlib.h>
+
+#include <string.h>
+ //#include <iostream>
 
 # define MAX_INPUT_LENGTH 800 //max number of input samples that can be handled per function call
 # define FILT_LENGTH 500 //max filter length that can be hanled per function call    
 # define BUFF_LEN (FILT_LENGTH - 1 + MAX_INPUT_LENGTH)
 # define SAMPLES 800
-
-union{
-int16_t input[SAMPLES];
-int16_t output[SAMPLES];
-}dat;
+# define upper_limit 0x3fffffff //
+# define lower_limit - 0x40000000 //
 
 int16_t coeffs[FILT_LENGTH] = {
   -1,  6,
@@ -274,55 +273,91 @@ void FIR_Init(void) {
   memset(insamp, 0, sizeof(insamp)); //initiate space in memory
 }
 
-void FIR(int length) //ints are 16bit define as such?
+void FIR(int16_t * filter_coeffs, int16_t * input, int16_t * output, int length) //ints are 16bit define as such?
 {
 
   register int32_t acc; //temporary accumulator for MAC operationv (32bit for 16bit input and 16bit for 8bit variables)
   register int n, k = 0;
-  register int16_t *h; //pointer to filter coefficients
-  register int16_t *x; //pointer to input samples
+  register int16_t * h; //pointer to filter coefficients
+  register int16_t * x; //pointer to input samples
   register int32_t temp1 = 0;
   register int32_t temp2 = 0;
 
   //copy the samples out of memory into the buffer   
-  memcpy( &insamp[FILT_LENGTH - 1], dat.input, length * sizeof(int16_t));
+  memcpy( & insamp[FILT_LENGTH - 1], input, length * sizeof(int16_t));
 
   for (n = 0; n < length; n++) {
-    h = coeffs;
-    x = &insamp[FILT_LENGTH - 1 + n]; //assign address of sample
+    h = filter_coeffs;
+    x = & insamp[FILT_LENGTH - 1 + n]; //assign address of sample
 
     acc = (1 << 10); // preload rounding constant
 
-    temp1 = (int32_t)( *h++) * (int32_t)( *x--); //perform multiplication and add to accumulator
-    temp2 = (int32_t)( *h++) * (int32_t)( *x--); //perform multiplication and add to accumulator
+    temp1 = (int32_t)( * h++) * (int32_t)( * x--); //perform multiplication and add to accumulator
+    temp2 = (int32_t)( * h++) * (int32_t)( * x--); //perform multiplication and add to accumulator
+
+    temp1 += (1 << 7); //rounding 
+    temp1 >>= 6; //shift
+    temp2 += (1 << 7); //rounding 
+    temp2 >>= 6; //shift
+
    
-    temp1 += (int32_t)( *h++) * (int32_t)( *x--);
-    temp2 += (int32_t)( *h++) * (int32_t)( *x--); //perform multiplication and add to accumulator
-  
-    temp1 += (int32_t)( *h++) * (int32_t)( *x--);
-    temp2 += (int32_t)( *h++) * (int32_t)( *x--);
+    temp1 += (int32_t)( * h++) * (int32_t)( * x--);
+    temp2 += (int32_t)( * h++) * (int32_t)( * x--); //perform multiplication and add to accumulator
 
-    temp1 += (int32_t)( *h++) * (int32_t)( *x--);
-    temp2 += (int32_t)( *h++) * (int32_t)( *x--);
+    temp1 += (1 << 7); //rounding 
+    temp1 >>= 6; //shift
+    temp2 += (1 << 7); //rounding 
+    temp2 >>= 6; //shift
 
+   
+    temp1 += (int32_t)( * h++) * (int32_t)( * x--);
+    temp2 += (int32_t)( * h++) * (int32_t)( * x--);
 
+    temp1 += (1 << 7); //rounding 
+    temp1 >>= 6; //shift
+    temp2 += (1 << 7); //rounding 
+    temp2 >>= 6; //shift
 
-    for (k = ((FILT_LENGTH >> 3) - 1); k > 0; k--) {
+    temp1 += (int32_t)( * h++) * (int32_t)( * x--);
+    temp2 += (int32_t)( * h++) * (int32_t)( * x--);
+
+    temp1 += (1 << 7); //rounding 
+    temp1 >>= 6; //shift
+    temp2 += (1 << 7); //rounding 
+    temp2 >>= 6; //shift
+
+    for (k = ((FILT_LENGTH) >> 3) - 1; k > 0; k--) {
 
       acc += temp1;
       acc += temp2;
 
-      temp1 = (int32_t)( *h++) * (int32_t)( *x--); //perform multiplication and add to accumulator
-      temp2 = (int32_t)( *h++) * (int32_t)( *x--); //perform multiplication and add to accumulator
+      temp1 = (int32_t)( * h++) * (int32_t)( * x--); //perform multiplication and add to accumulator
+      temp2 = (int32_t)( * h++) * (int32_t)( * x--); //perform multiplication and add to accumulator
 
-      temp1 += (int32_t)( *h++) * (int32_t)( *x--);
-      temp2 += (int32_t)( *h++) * (int32_t)( *x--); 
-    
-      temp1 += (int32_t)( *h++) * (int32_t)( *x--);
-      temp2 += (int32_t)( *h++) * (int32_t)( *x--);  
+      temp1 += (1 << 7); //rounding 
+      temp1 >>= 6; //shift
+      temp2 += (1 << 7); //rounding 
+      temp2 >>= 6; //shift
 
-      temp1 += (int32_t)( *h++) * (int32_t)( *x--);
-      temp2 += (int32_t)( *h++) * (int32_t)( *x--);
+      //acc = acc + temp1;
+      temp1 += (int32_t)( * h++) * (int32_t)( * x--);
+      temp2 += (int32_t)( * h++) * (int32_t)( * x--); //perform multiplication and add to accumulator
+
+      temp1 += (1 << 7); //rounding 
+      temp1 >>= 6; //shift
+      temp2 += (1 << 7); //rounding 
+      temp2 >>= 6; //shift
+
+      temp1 += (int32_t)( * h++) * (int32_t)( * x--);
+      temp2 += (int32_t)( * h++) * (int32_t)( * x--);
+
+      temp1 += (1 << 7); //rounding 
+      temp1 >>= 6; //shift
+      temp2 += (1 << 7); //rounding 
+      temp2 >>= 6; //shift
+
+      temp1 += (int32_t)( * h++) * (int32_t)( * x--);
+      temp2 += (int32_t)( * h++) * (int32_t)( * x--);
 
       temp1 += (1 << 7); //rounding 
       temp1 >>= 6; //shift
@@ -334,19 +369,25 @@ void FIR(int length) //ints are 16bit define as such?
     acc += temp1;
     acc += temp2;
 
-    dat.output[n] = (int16_t)(acc >> 9); //convert to 16 bit
+    /*  if( acc > upper_limit){ //check if accumulator has saturated
+         acc=upper_limit;
+     } else if (acc < lower_limit) {
+         acc=lower_limit;
+     }*/
+
+    output[n] = (int16_t)(acc >> 9); //convert to 16 bit
   }
 
   //memove to shift samples to bottom of buffer
-  memmove( &insamp[0], &insamp[length], (FILT_LENGTH - 1) * sizeof(int16_t));
+  memmove( & insamp[0], & insamp[length], (FILT_LENGTH - 1) * sizeof(int16_t));
 }
 
 int main(void) {
- 
   int size;
-
-  FILE *in_fid;
-  FILE *out_fid;
+  int16_t input[SAMPLES];
+  int16_t output[SAMPLES];
+  FILE * in_fid;
+  FILE * out_fid;
 
   // open the input waveform file
   in_fid = fopen("noisy.wav", "rb");
@@ -368,11 +409,11 @@ int main(void) {
   // process all of the samples
   do {
     // read samples from file
-    size = fread(dat.input, sizeof(int16_t), SAMPLES, in_fid);
+    size = fread(input, sizeof(int16_t), SAMPLES, in_fid);
     // perform the filtering
-    FIR(size);
+    FIR(coeffs, input, output, size);
     // write samples to file
-    fwrite(dat.output, sizeof(int16_t), size, out_fid);
+    fwrite(output, sizeof(int16_t), size, out_fid);
   } while (size != 0);
 
   fclose(in_fid);
