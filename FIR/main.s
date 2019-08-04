@@ -36,125 +36,114 @@ FIR_Init:
 	.fpu vfpv3-d16
 	.type	FIR, %function
 FIR:
-	@ args = 0, pretend = 0, frame = 40
+	@ args = 0, pretend = 0, frame = 0
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
-	sub	sp, sp, #44
+	push	{r3, r4, r5, r6, r7, r8, r9, r10, fp, lr}
 	mov	r4, r0
-	lsl	r5, r0, #1
-	str	r5, [sp, #36]
+	mov	r7, r2
+	mov	r6, r3
+	lsl	r5, r3, #1
 	mov	r2, r5
-	movw	r1, #:lower16:dat
-	movt	r1, #:upper16:dat
 	ldr	r0, .L10
 	bl	memcpy
-	cmp	r4, #0
+	cmp	r6, #0
 	ble	.L4
-	movw	r3, #:lower16:.LANCHOR0
-	movt	r3, #:upper16:.LANCHOR0
-	ldrsh	fp, [r3]
-	ldrsh	r2, [r3, #2]
-	str	r2, [sp, #4]
-	ldrsh	r2, [r3, #4]
-	str	r2, [sp, #8]
-	ldrsh	r2, [r3, #6]
-	str	r2, [sp, #12]
-	ldrsh	r2, [r3, #8]
-	str	r2, [sp, #16]
-	ldrsh	r2, [r3, #10]
-	str	r2, [sp, #20]
-	ldrsh	r2, [r3, #12]
-	str	r2, [sp, #24]
-	ldrsh	r3, [r3, #14]
-	str	r3, [sp, #28]
-	ldr	r2, .L10+4
-	movw	r9, #:lower16:dat
-	movt	r9, #:upper16:dat
-	add	r3, r5, r9
-	str	r3, [sp, #32]
-	movw	r10, #:lower16:.LANCHOR0
-	movt	r10, #:upper16:.LANCHOR0
-	add	r7, r10, #1008
+	ldr	r0, .L10+4
+	sub	r7, r7, #2
+	add	r9, r7, r5
+	add	lr, r4, #1008
+	mov	r8, #1024
 .L6:
-	ldrsh	r1, [r2, #14]
-	ldrsh	ip, [r2, #12]
-	ldrsh	r3, [r2, #10]
-	ldr	r0, [sp, #8]
-	mul	r3, r0, r3
-	mla	r1, fp, r1, r3
-	ldrsh	r3, [r2, #8]
-	ldr	r0, [sp, #12]
-	mul	r3, r0, r3
-	ldr	r0, [sp, #4]
-	mla	r3, r0, ip, r3
-	ldrsh	r4, [r2, #6]
-	ldr	r0, [sp, #16]
-	mla	r1, r0, r4, r1
-	ldrsh	ip, [r2, #4]
-	ldr	r0, [sp, #20]
-	mla	r3, r0, ip, r3
-	mov	r8, r2
-	ldrsh	r4, [r8, #2]!
-	ldr	r0, [sp, #24]
-	mla	r4, r0, r4, r1
-	ldrsh	ip, [r2], #-18
-	ldr	r1, [sp, #28]
-	mla	ip, r1, ip, r3
-	add	r3, r10, #32
-	mov	r0, #1024
+	ldrsh	r3, [r4]
+	ldrsh	r1, [r0, #14]
+	mul	r1, r1, r3
+	ldrsh	ip, [r4, #2]
+	ldrsh	r2, [r0, #12]
+	mul	r2, r2, ip
+	add	r1, r1, #128
+	add	ip, r2, #128
+	ldrsh	r2, [r4, #4]
+	ldrsh	r3, [r0, #10]
+	mul	r3, r3, r2
+	add	r3, r3, r1, asr #6
+	ldrsh	r1, [r4, #6]
+	ldrsh	r2, [r0, #8]
+	mul	r2, r2, r1
+	add	r2, r2, ip, asr #6
+	add	r1, r3, #128
+	add	r2, r2, #128
+	ldrsh	ip, [r4, #8]
+	ldrsh	r3, [r0, #6]
+	mul	r3, r3, ip
+	add	r3, r3, r1, asr #6
+	ldrsh	ip, [r4, #10]
+	ldrsh	r1, [r0, #4]
+	mul	r1, r1, ip
+	add	r2, r1, r2, asr #6
+	add	r3, r3, #128
+	add	r2, r2, #128
+	ldrsh	ip, [r4, #12]
+	mov	r6, r0
+	ldrsh	r1, [r6, #2]!
+	mul	r1, r1, ip
+	add	r3, r1, r3, asr #6
+	ldrsh	ip, [r4, #14]
+	ldrsh	r1, [r0], #-18
+	mul	r1, r1, ip
+	add	r1, r1, r2, asr #6
+	add	r3, r3, #128
+	asr	r3, r3, #6
+	add	r1, r1, #128
+	asr	r1, r1, #6
+	add	r2, r4, #32
+	mov	ip, r8
 .L5:
-	add	r4, r0, r4
-	add	r0, r4, ip
-	ldrsh	lr, [r3, #-16]
-	ldrsh	r5, [r2, #16]
-	ldrsh	ip, [r3, #-14]
-	ldrsh	r4, [r2, #14]
-	ldrsh	r1, [r3, #-12]
-	ldrsh	r6, [r2, #12]
-	mul	r6, r6, r1
-	mla	r5, r5, lr, r6
-	ldrsh	lr, [r3, #-10]
-	ldrsh	r1, [r2, #10]
-	mul	r1, r1, lr
-	mla	r1, r4, ip, r1
-	ldrsh	r4, [r3, #-8]
-	ldrsh	lr, [r2, #8]
-	mla	lr, lr, r4, r5
-	ldrsh	ip, [r3, #-6]
-	ldrsh	r4, [r2, #6]
-	mla	r1, r4, ip, r1
-	ldrsh	r4, [r3, #-4]
-	ldrsh	ip, [r2, #4]
-	mla	r4, ip, r4, lr
-	ldrsh	ip, [r3, #-2]
-	ldrsh	lr, [r2, #2]
-	mla	ip, lr, ip, r1
-	add	r4, r4, #128
-	asr	r4, r4, #6
-	add	ip, ip, #128
-	asr	ip, ip, #6
-	add	r3, r3, #16
-	sub	r2, r2, #16
-	cmp	r3, r7
+	
+	ldrsh	fp, [r2, #-16]
+	ldrsh	r3, [r0, #16]
+	mla		r11, r3, fp, r11
+	ldrsh	r10, [r2, #-14]
+	ldrsh	fp, [r0, #14]
+	mla		r1, fp, r10, r1
+	ldrsh	fp, [r2, #-12]
+	ldrsh	r3, [r0, #12]
+	mla		r11, r3, fp, r11
+	ldrsh	r10, [r2, #-10]
+	ldrsh	fp, [r0, #10]
+	mla		r1, fp, r10, r1
+	ldrsh	fp, [r2, #-8]
+	ldrsh	r3, [r0, #8]
+	mla		r11, r3, fp, r11
+	ldrsh	r10, [r2, #-6]
+	ldrsh	fp, [r0, #6]
+	mla		r1, fp, r10, r1
+	ldrsh	fp, [r2, #4]
+	ldrsh	r3, [r0, #4]
+	mla		r11, r3, fp, r11
+	ldrsh	r10, [r2, #-2]
+	ldrsh	fp, [r0, #2]
+	mla		r1, fp, r10, r1
+	add		r11, r11, #128
+	asr 	r11, r11, #6
+	add		r1, r1, #128
+	asr 	r1, r1, #6
+	add	r2, r2, #16
+	sub	r0, r0, #16
+	cmp	r2, lr
 	bne	.L5
-	add	r0, r0, r4
-	add	r0, ip, r0
-	asr	r0, r0, #9
-	strh	r0, [r9], #2	@ movhi
-	mov	r2, r8
-	ldr	r3, [sp, #32]
-	cmp	r9, r3
+	add	r1, r1, r11
+	asr	r1, r1, #9
+	strh	r1, [r7, #2]!	@ movhi
+	mov	r0, r6
+	cmp	r7, r9
 	bne	.L6
 .L4:
 	movw	r0, #:lower16:insamp
 	movt	r0, #:upper16:insamp
 	movw	r2, #998
-	ldr	r3, [sp, #36]
-	add	r1, r0, r3
+	add	r1, r0, r5
 	bl	memmove
-	add	sp, sp, #44
-	@ sp needed
-	pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+	pop	{r3, r4, r5, r6, r7, r8, r9, r10, fp, pc}
 .L11:
 	.align	2
 .L10:
@@ -168,9 +157,10 @@ FIR:
 	.fpu vfpv3-d16
 	.type	main, %function
 main:
-	@ args = 0, pretend = 0, frame = 0
+	@ args = 0, pretend = 0, frame = 3200
 	@ frame_needed = 0, uses_anonymous_args = 0
-	push	{r4, r5, r6, r7, r8, r9, r10, lr}
+	push	{r4, r5, r6, r7, r8, lr}
+	sub	sp, sp, #3200
 	movw	r1, #:lower16:.LC0
 	movt	r1, #:upper16:.LC0
 	movw	r0, #:lower16:.LC1
@@ -186,22 +176,25 @@ main:
 	subs	r7, r0, #0
 	beq	.L19
 	bl	FIR_Init
-	movw	r5, #:lower16:dat
-	movt	r5, #:upper16:dat
-	mov	r9, #800
-	mov	r6, #2
+	mov	r5, #2
+	movw	r6, #:lower16:.LANCHOR0
+	movt	r6, #:upper16:.LANCHOR0
 .L15:
 	mov	r3, r8
-	mov	r2, r9
-	mov	r1, r6
-	mov	r0, r5
+	mov	r2, #800
+	mov	r1, r5
+	add	r0, sp, #1600
 	bl	fread
 	mov	r4, r0
+	mov	r3, r0
+	mov	r2, sp
+	add	r1, sp, #1600
+	mov	r0, r6
 	bl	FIR
 	mov	r3, r7
 	mov	r2, r4
-	mov	r1, r6
-	mov	r0, r5
+	mov	r1, r5
+	mov	r0, sp
 	bl	fwrite
 	cmp	r4, #0
 	bne	.L15
@@ -213,7 +206,9 @@ main:
 	movt	r0, #:upper16:.LC6
 	bl	puts
 	mov	r0, #0
-	pop	{r4, r5, r6, r7, r8, r9, r10, pc}
+	add	sp, sp, #3200
+	@ sp needed
+	pop	{r4, r5, r6, r7, r8, pc}
 .L18:
 	movw	r0, #:lower16:.LC2
 	movt	r0, #:upper16:.LC2
@@ -229,7 +224,6 @@ main:
 	.size	main, .-main
 	.comm	insamp,2598,4
 	.global	coeffs
-	.comm	dat,1600,4
 	.data
 	.align	2
 	.set	.LANCHOR0,. + 0
