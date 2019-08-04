@@ -8,6 +8,11 @@
 # define BUFF_LEN (FILT_LENGTH - 1 + MAX_INPUT_LENGTH)
 # define SAMPLES 800
 
+union{
+int16_t input[SAMPLES];
+int16_t output[SAMPLES];
+}dat;
+
 int16_t coeffs[FILT_LENGTH] = {
   -1,  6,
   -1,  6,
@@ -269,7 +274,7 @@ void FIR_Init(void) {
   memset(insamp, 0, sizeof(insamp)); //initiate space in memory
 }
 
-void FIR(int16_t *filter_coeffs, int16_t *input, int16_t *output, int length) //ints are 16bit define as such?
+void FIR(int length) //ints are 16bit define as such?
 {
 
   register int32_t acc; //temporary accumulator for MAC operationv (32bit for 16bit input and 16bit for 8bit variables)
@@ -280,10 +285,10 @@ void FIR(int16_t *filter_coeffs, int16_t *input, int16_t *output, int length) //
   register int32_t temp2 = 0;
 
   //copy the samples out of memory into the buffer   
-  memcpy( &insamp[FILT_LENGTH - 1], input, length * sizeof(int16_t));
+  memcpy( &insamp[FILT_LENGTH - 1], dat.input, length * sizeof(int16_t));
 
   for (n = 0; n < length; n++) {
-    h = filter_coeffs;
+    h = coeffs;
     x = &insamp[FILT_LENGTH - 1 + n]; //assign address of sample
 
     acc = (1 << 10); // preload rounding constant
@@ -311,7 +316,7 @@ void FIR(int16_t *filter_coeffs, int16_t *input, int16_t *output, int length) //
       temp2 = (int32_t)( *h++) * (int32_t)( *x--); //perform multiplication and add to accumulator
 
       temp1 += (int32_t)( *h++) * (int32_t)( *x--);
-      temp2 += (int32_t)( *h++) * (int32_t)( *x--); //perform multiplication and add to accumulator
+      temp2 += (int32_t)( *h++) * (int32_t)( *x--); 
     
       temp1 += (int32_t)( *h++) * (int32_t)( *x--);
       temp2 += (int32_t)( *h++) * (int32_t)( *x--);  
@@ -329,7 +334,7 @@ void FIR(int16_t *filter_coeffs, int16_t *input, int16_t *output, int length) //
     acc += temp1;
     acc += temp2;
 
-    output[n] = (int16_t)(acc >> 9); //convert to 16 bit
+    dat.output[n] = (int16_t)(acc >> 9); //convert to 16 bit
   }
 
   //memove to shift samples to bottom of buffer
@@ -337,9 +342,9 @@ void FIR(int16_t *filter_coeffs, int16_t *input, int16_t *output, int length) //
 }
 
 int main(void) {
+ 
   int size;
-  int16_t input[SAMPLES];
-  int16_t output[SAMPLES];
+
   FILE *in_fid;
   FILE *out_fid;
 
@@ -363,11 +368,11 @@ int main(void) {
   // process all of the samples
   do {
     // read samples from file
-    size = fread(input, sizeof(int16_t), SAMPLES, in_fid);
+    size = fread(dat.input, sizeof(int16_t), SAMPLES, in_fid);
     // perform the filtering
-    FIR(coeffs, input, output, size);
+    FIR(size);
     // write samples to file
-    fwrite(output, sizeof(int16_t), size, out_fid);
+    fwrite(dat.output, sizeof(int16_t), size, out_fid);
   } while (size != 0);
 
   fclose(in_fid);
