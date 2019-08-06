@@ -508,9 +508,9 @@ main:
 	add	r4, r4, #2	@ i, i,
 .L15:
 @ iir_optimized.c:62: 	for (i =2; !(i&0x80); i+=2){
-	and	r3, r4, #128	@ _59, i,
+	ands	r3, r4, #128	@ _59, i,
 @ iir_optimized.c:62: 	for (i =2; !(i&0x80); i+=2){
-	cmp	r3, #0	@ _59,
+@	cmp	r3, #0	@ _59,	@switch line above to update zero flag, remove this instruction
 	beq	.L16		@,
 @ iir_optimized.c:98: }
 	nop	
